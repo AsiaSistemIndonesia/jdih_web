@@ -118,7 +118,7 @@ const api = axios.create({
 });
 
 export const fetchWebSliderAll = async (): Promise<Slider[]> => {
-  const res = await api.get("/slider/all");
+  const res = await api.get("/sslider/all");
   return res.data;
 };
 
