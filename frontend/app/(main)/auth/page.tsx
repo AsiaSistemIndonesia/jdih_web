@@ -696,58 +696,6 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* OPTIONS */}
-                <div
-                  className="jdih-in mb-7 flex items-center justify-between"
-                  style={{
-                    animationDelay: "0.32s",
-                  }}
-                >
-                  <button
-                    type="button"
-                    disabled={loginMutation.isPending}
-                    onClick={() =>
-                      setRemember((r) => !r)
-                    }
-                    className="jdih-sans flex items-center gap-2 border-0 bg-transparent p-0 text-xs"
-                    style={{
-                      color: MUTED,
-                    }}
-                  >
-                    <span
-                      className="flex h-[17px] w-[17px] items-center justify-center rounded-[5px] border transition-all"
-                      style={{
-                        borderColor: remember
-                          ? BLUE
-                          : "#D1D5DB",
-                        background: remember
-                          ? BLUE
-                          : "white",
-                      }}
-                    >
-                      {remember && (
-                        <Check
-                          size={11}
-                          color="white"
-                          strokeWidth={3}
-                        />
-                      )}
-                    </span>
-
-                    Ingat saya
-                  </button>
-
-                  <a
-                    href="#"
-                    className="jdih-sans text-xs font-medium"
-                    style={{
-                      color: BLUE,
-                      textDecoration: "none",
-                    }}
-                  >
-                    Lupa kata sandi?
-                  </a>
-                </div>
 
                 {/* BUTTON */}
                 <button
