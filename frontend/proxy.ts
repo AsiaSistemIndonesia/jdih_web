@@ -188,7 +188,7 @@ export function proxy(request: NextRequest) {
   // =========================================================
   // JIKA URL MEMILIKI ACCESS TOKEN YANG BENAR
   // =========================================================
-  if (queryToken === process.env.WEBSITE_ACCESS_TOKEN) {
+  if (queryToken === "159de711ed5b0cfb656709178d05c88d2d018587cd3f6ff1f96366d4f586b354") {
     // Hapus parameter access_token dari URL
     const url = new URL(request.url)
     url.searchParams.delete('access_token')
