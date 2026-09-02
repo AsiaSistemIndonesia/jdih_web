@@ -222,10 +222,10 @@ export default function DokumenHukumForm({
       formData.append("file_dokumen", values.file_dokumen);
     }
 
-    console.log("MODE:", isEdit ? "EDIT" : "CREATE");
+    
 
     formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
+      
     });
 
     if (!isEdit) {
@@ -243,7 +243,7 @@ export default function DokumenHukumForm({
 
           toast.error(message);
 
-          console.log("CREATE DokumenHukum ERROR:", error);
+          
         },
       });
 
@@ -281,7 +281,7 @@ export default function DokumenHukumForm({
 
           toast.error(message);
 
-          console.log("UPDATE DokumenHukum ERROR:", error);
+          
         },
       },
     );
@@ -294,7 +294,7 @@ export default function DokumenHukumForm({
   const onInvalid: SubmitErrorHandler<DokumenHukumFormValues> = (
     formErrors,
   ) => {
-    console.log("FORM VALIDATION ERROR:", formErrors);
+    
 
     const firstError = Object.values(formErrors)[0];
 

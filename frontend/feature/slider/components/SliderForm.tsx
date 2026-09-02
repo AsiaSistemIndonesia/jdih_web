@@ -100,7 +100,6 @@ useEffect(() => {
   };
 
   const onSubmit: SubmitHandler<SliderFormValues> = (values) => {
-    console.log("VALUES:", values);
 
     const formData = new FormData();
 
@@ -124,10 +123,9 @@ useEffect(() => {
     }
     
     // DEBUG
-    console.log("========== FORMDATA ==========");
-
+  
     for (const [key, value] of formData.entries()) {
-      console.log(key, value);
+      
     }
 
     // CREATE
@@ -148,7 +146,7 @@ useEffect(() => {
         },
 
         onError: (error) => {
-          console.log("CREATE ERROR:", error);
+
         },
       });
 
@@ -158,7 +156,7 @@ useEffect(() => {
     // UPDATE
     
     if (!values.slider_id) {
-      console.log("ID slider tidak ditemukan");
+      
 
       return;
     }
@@ -180,7 +178,7 @@ useEffect(() => {
     );
   };
   const onInvalid: SubmitErrorHandler<SliderFormValues> = (formErrors) => {
-    console.log(formErrors);
+    
   };
 
   const submitForm = () => {

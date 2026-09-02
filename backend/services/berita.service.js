@@ -249,8 +249,6 @@ const update = async (id, data) => {
     updateData.gambar = data.gambar;
   }
 
-  console.log("UPDATE DATA:");
-  console.dir(updateData, { depth: null });
 
   const result = await beritaRepository.update(
     id,

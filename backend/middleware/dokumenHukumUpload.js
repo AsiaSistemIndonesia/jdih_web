@@ -50,26 +50,6 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
 
-    // Debug nama field
-    console.log(
-        "Multer Field:",
-        JSON.stringify(file.fieldname)
-    );
-
-    console.log(
-        "Original File:",
-        file.originalname
-    );
-
-    console.log(
-        "Mime Type:",
-        file.mimetype
-    );
-
-    // --------------------------------------------------------
-    // Bersihkan whitespace pada field name
-    // --------------------------------------------------------
-
     const fieldName = file.fieldname.trim();
 
     const allowedFields = [

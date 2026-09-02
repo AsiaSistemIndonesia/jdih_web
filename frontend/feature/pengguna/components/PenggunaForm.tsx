@@ -186,23 +186,9 @@ export default function PenggunaForm({
         values.foto
       );
     }
-
-    /*
-     * Debug payload
-     */
-    console.log(
-      "MODE:",
-      isEdit
-        ? "EDIT"
-        : "CREATE"
-    );
-
     formData.forEach(
       (value, key) => {
-        console.log(
-          `${key}:`,
-          value
-        );
+        
       }
     );
 

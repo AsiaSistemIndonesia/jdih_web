@@ -1,12 +1,34 @@
+const jwt = require("jsonwebtoken");
+
 const authMiddleware = (req, res, next) => {
-  if (!req.session || !req.session.userId) {
+  console.log(req.cookies);
+  
+  try {
+    const token = req.cookies?.access_token;
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized. Silakan login terlebih dahulu.",
+      });
+    }
+
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
+
+    req.user = decoded;
+
+    next();
+  } catch (error) {
+    console.error("AUTH MIDDLEWARE ERROR:", error);
+
     return res.status(401).json({
       success: false,
-      message: "Unauthorized. Silakan login terlebih dahulu.",
+      message: "Session login tidak valid atau sudah expired.",
     });
   }
-
-  next();
 };
 
 module.exports = authMiddleware;

@@ -31,21 +31,23 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const logoutMutation = LogoutHook();
-  // const sessionHooks = SessionHook();
+  const logoutMutation = LogoutHook();
+  const sessionHooks = SessionHook();
+  console.log(sessionHooks);
   
-  // const handleLogout = async () => {
-  //   if (logoutMutation.isPending) return;
+  
+  const handleLogout = async () => {
+    // if (logoutMutation.isPending) return;
 
-  //   try {
-  //     await logoutMutation.mutateAsync();
+    try {
+      // await logoutMutation.mutateAsync();
 
-  //     router.replace("/auth");
+      router.replace("/auth");
       
-  //   } catch (error) {
-  //     console.error("Logout error:", error);
-  //   }
-  // };
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
   const [toast, setToast] = useState({
     open: false,
     type: "success" as "success" | "error" | "info",
@@ -224,7 +226,7 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
 
                   <div className="my-1 h-px bg-slate-100" />
 
-                  {/* <button
+                  <button
                     type="button"
                     onClick={handleLogout}
                     disabled={logoutMutation.isPending}
@@ -232,7 +234,7 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
                   >
                     <LogOut size={18} />
                     {logoutMutation.isPending ? "Keluar..." : "Logout"}
-                  </button> */}
+                  </button>
                 </div>
               )}
             </div>

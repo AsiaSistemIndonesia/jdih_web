@@ -167,14 +167,14 @@ export default function BeritaForm({ mode, data, onSuccess }: BeritaFormProps) {
         },
 
         onError: (error) => {
-          console.error("UPDATE BERITA ERROR:", error);
+          
         },
       },
     );
   };
 
   const onInvalid: SubmitErrorHandler<BeritaFormValues> = (formErrors) => {
-    console.log("VALIDATION ERROR:", formErrors);
+    
   };
 
   const submitForm = () => {

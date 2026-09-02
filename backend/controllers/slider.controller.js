@@ -73,13 +73,6 @@ const create = async (req, res) => {
   try {
     const { judul, keterangan, status } = req.body;
 
-    console.log("========== CREATE SLIDER ==========");
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
-
-    // ==========================================
-    // VALIDASI JUDUL
-    // ==========================================
 
     if (!judul || judul.trim() === "") {
       if (req.file) {

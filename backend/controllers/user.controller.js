@@ -57,10 +57,7 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        console.log("=================================");
-        console.log("BODY:", req.body);
-        console.log("FILE:", req.file);
-        console.log("=================================");
+        
 
         const {
             nama,
@@ -123,9 +120,7 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        console.log("UPDATE PARAMS:", req.params);
-        console.log("UPDATE BODY:", req.body);
-        console.log("UPDATE FILE:", req.file);
+        
 
         const { id } = req.params;
 
@@ -208,7 +203,6 @@ const updatePassword = async (req, res) => {
   try {
     const id = Number(req.params.id);
     const { password } = req.body;
-    console.log(req.body);
     
 
     if (!Number.isInteger(id) || id <= 0) {

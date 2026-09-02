@@ -1,9 +1,9 @@
 const authService = require("../services/auth.service");
+const jwt = require("jsonwebtoken");
 
 const loginController = async (req, res) => {
-  // try {
+  try {
     const { email, password } = req.body;
-    
 
     if (!email || !password) {
       return res.status(400).json({
@@ -12,50 +12,62 @@ const loginController = async (req, res) => {
       });
     }
 
-    const user = await authService.loginService(email, password);
+    const user = await authService.loginService(
+      email,
+      password
+    );
 
-    req.session.userId = user.id;
+    const token = jwt.sign(
+      {
+        id: user.id,
+        nama: user.nama,
+        email: user.email,
+        role: user.role,
+        foto: user.foto,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "8h",
+      }
+    );
+    
 
-    req.session.user = {
-      id: user.id,
-      nama: user.nama,
-      email: user.email,
-      role: user.role,
-      foto: user.foto,
-    };
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 8,
+    });
 
     return res.status(200).json({
       success: true,
       message: "Login berhasil",
       data: user,
     });
-  // } catch (error) {
-  //   console.error("LOGIN ERROR:", error);
+  } catch (error) {
+    
 
-  //   if (error.message === "EMAIL_OR_PASSWORD_INVALID") {
-  //     return res.status(401).json({
-  //       success: false,
-  //       message: "Email atau password salah",
-  //     });
-  //   }
+    if (error.message === "EMAIL_OR_PASSWORD_INVALID") {
+      return res.status(401).json({
+        success: false,
+        message: "Email atau password salah",
+      });
+    }
 
-  //   return res.status(500).json({
-  //     success: false,
-  //     message: "Terjadi kesalahan pada server",
-  //   });
-  // }
+    return res.status(500).json({
+      success: false,
+      message: "Terjadi kesalahan pada server",
+    });
+  }
 };
 
 const sessionController = async (req, res) => {
   try {
-    if (!req.session.userId) {
-      return res.status(401).json({
-        success: false,
-        message: "Session tidak ditemukan",
-      });
-    }
+    const user = await authService.getCurrentUserService(
+      req.user.id
+    );
 
-    const user = await authService.getCurrentUserService(req.session.userId);
+    
 
     return res.status(200).json({
       success: true,
@@ -66,7 +78,7 @@ const sessionController = async (req, res) => {
     console.error("SESSION ERROR:", error);
 
     if (error.message === "USER_NOT_FOUND") {
-      req.session.destroy(() => {});
+      res.clearCookie("access_token");
 
       return res.status(401).json({
         success: false,
@@ -80,36 +92,27 @@ const sessionController = async (req, res) => {
     });
   }
 };
-
 const logoutController = async (req, res) => {
   try {
-    req.session.destroy((error) => {
-      if (error) {
-        console.error("LOGOUT ERROR:", error);
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
 
-        return res.status(500).json({
-          success: false,
-          message: "Gagal logout",
-        });
-      }
-
-      res.clearCookie("connect.sid");
-
-      return res.status(200).json({
-        success: true,
-        message: "Logout berhasil",
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Logout berhasil",
     });
   } catch (error) {
     console.error("LOGOUT ERROR:", error);
 
     return res.status(500).json({
       success: false,
-      message: "Terjadi kesalahan pada server",
+      message: "Gagal logout",
     });
   }
 };
-
 module.exports = {
   loginController,
   sessionController,

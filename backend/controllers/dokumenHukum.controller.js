@@ -60,9 +60,7 @@ const getById = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        console.log("BODY:", req.body);
-        console.log("FILES:", req.files);
-
+        
         const {
             judul,
             kategori,
@@ -85,15 +83,7 @@ const create = async (req, res) => {
         const fileDokumen =
             req.files?.file_dokumen?.[0]?.filename || null;
 
-        console.log(
-            "FILE ABSTRAK:",
-            fileAbstrak
-        );
 
-        console.log(
-            "FILE DOKUMEN:",
-            fileDokumen
-        );
 
         if (!judul) {
             return res.status(400).json({

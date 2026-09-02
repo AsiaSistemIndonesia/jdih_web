@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 
 const sliderRoutes = require("./routes/slider.routes");
 const beritaRoutes = require("./routes/berita.routes");
@@ -9,33 +10,39 @@ const userRoute = require("./routes/user.route");
 const dokumenHukumRoute = require("./routes/dokumenHukum.route");
 const pengaturanRoute = require("./routes/pengaturan.route");
 const authRoutes = require("./routes/auth.route");
-const app = express();
 
-const sessionMiddleware = require("./config/session");
+const app = express();
 
 app.use(
   cors({
-    origin: process.env.NEXT_PUBLIC_APP_BASE_URL || "http://localhost:3000",
+    origin:
+      process.env.NEXT_PUBLIC_APP_BASE_URL ||
+      "http://localhost:3000",
     credentials: true,
-  }),
+  })
 );
 
 app.use(
   express.json({
     limit: "50mb",
-  }),
+  })
 );
 
 app.use(
   express.urlencoded({
     extended: true,
     limit: "50mb",
-  }),
+  })
 );
-app.use(sessionMiddleware);
 
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
-app.use("/api/master-data/login", authRoutes); 
+app.use(cookieParser());
+
+app.use(
+  "/uploads",
+  express.static(path.join(process.cwd(), "uploads"))
+);
+
+app.use("/api/master-data/login", authRoutes);
 
 app.use("/api/master-data/slider", sliderRoutes);
 
@@ -46,6 +53,7 @@ app.use("/api/master-data/kontak", kontakRoute);
 app.use("/api/master-data/user", userRoute);
 
 app.use("/api/master-data/dokumen-hukum", dokumenHukumRoute);
+
 app.use("/api/master-data/pengaturan", pengaturanRoute);
 
 app.use((req, res) => {
@@ -77,7 +85,6 @@ app.use((err, req, res, next) => {
       message: "Format gambar harus JPG, JPEG, atau PNG",
     });
   }
-  console.log(err.code);
 
   if (err.code === "LIMIT_UNEXPECTED_FILE") {
     return res.status(400).json({
@@ -99,10 +106,11 @@ app.use((err, req, res, next) => {
 
   return res.status(err.status || 500).json({
     success: false,
-
     message: err.message || "Internal server error",
-
-    error: process.env.NODE_ENV === "development" ? err.message : undefined,
+    error:
+      process.env.NODE_ENV === "development"
+        ? err.message
+        : undefined,
   });
 });
 

@@ -155,7 +155,6 @@ export default function PengaturanForm() {
         // ======================================================
 
         onSuccess: (response) => {
-          console.log("Update pengaturan berhasil:", response);
 
           // Tampilkan toast berhasil
           setToast({
