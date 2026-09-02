@@ -68,7 +68,7 @@ interface SliderApiResponse {
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ??
-  "http://localhost:3000";
+  "https://jdih-be.asiasistem.com";
 
 function getImageUrl(value: unknown) {
   if (!value) {

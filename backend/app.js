@@ -15,9 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin:
-      process.env.NEXT_PUBLIC_APP_BASE_URL ||
-      "http://localhost:3000",
+    origin: "https://jdih.asiasistem.com",
     credentials: true,
   })
 );
@@ -66,8 +64,6 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  
-
   if (err.code === "LIMIT_FILE_SIZE") {
     return res.status(400).json({
       success: false,
