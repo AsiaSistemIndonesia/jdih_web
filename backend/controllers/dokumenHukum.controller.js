@@ -21,10 +21,7 @@ const getAll = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "GET ALL DOKUMEN HUKUM ERROR:",
-            error
-        );
+        
 
         return res.status(400).json({
             success: false,
@@ -46,10 +43,7 @@ const getById = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "GET DOKUMEN HUKUM ERROR:",
-            error
-        );
+        
 
         return res.status(404).json({
             success: false,
@@ -118,10 +112,7 @@ const create = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "CREATE DOKUMEN HUKUM ERROR:",
-            error
-        );
+        
 
         return res.status(400).json({
             success: false,
@@ -187,10 +178,7 @@ const update = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "UPDATE DOKUMEN HUKUM ERROR:",
-            error
-        );
+        
 
         return res.status(400).json({
             success: false,
@@ -212,11 +200,7 @@ const remove = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "DELETE DOKUMEN HUKUM ERROR:",
-            error
-        );
-
+        
         return res.status(400).json({
             success: false,
             message: error.message,
@@ -277,7 +261,7 @@ const getSummary = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("GET SUMMARY DOKUMEN HUKUM ERROR:", error);
+    
 
     return res.status(500).json({
       success: false,
@@ -299,7 +283,7 @@ const getList = async (req, res) => {
             total: result.total,
         });
     } catch (error) {
-        console.error("GET LIST PERATURAN ERROR:", error);
+        
 
         return res.status(500).json({
             success: false,
@@ -336,11 +320,7 @@ const getAllWeb = async (req, res) => {
             pagination: result.pagination,
         });
     } catch (error) {
-        console.error(
-            "GET ALL WEB DOKUMEN HUKUM ERROR:",
-            error
-        );
-
+        
         return res.status(500).json({
             success: false,
             message:

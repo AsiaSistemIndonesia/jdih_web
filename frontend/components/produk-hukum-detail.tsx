@@ -358,7 +358,7 @@ async function handleDownloadAbstrak(file: string) {
 
     window.URL.revokeObjectURL(blobUrl);
   } catch (error) {
-    console.error("DOWNLOAD PERATURAN ERROR:", error);
+    
   }
 }
 
@@ -386,7 +386,7 @@ async function handleDownloadPeraturan(produk: ProdukHukum) {
 
     window.URL.revokeObjectURL(blobUrl);
   } catch (error) {
-    console.error("DOWNLOAD PERATURAN ERROR:", error);
+    
   }
 }
 export const formatTanggal = (value?: string | Date | null): string => {

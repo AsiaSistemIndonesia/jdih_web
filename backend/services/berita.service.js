@@ -31,10 +31,7 @@ const deleteImage = (filename) => {
 
     } catch (error) {
 
-        console.error(
-            "Gagal menghapus gambar:",
-            error
-        );
+        
     }
 };
 

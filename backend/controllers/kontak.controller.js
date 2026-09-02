@@ -10,7 +10,7 @@ const create = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Create kontak error:", error);
+    
 
     return res.status(400).json({
       success: false,
@@ -40,7 +40,7 @@ const findAll = async (req, res) => {
       pagination: result.pagination,
     });
   } catch (error) {
-    console.error("Get kontak error:", error);
+    
 
     return res.status(500).json({
       success: false,

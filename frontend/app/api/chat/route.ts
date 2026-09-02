@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (!ACS_API_KEY) {
-      console.error("ACS_API_KEY is not defined in environment variables");
+      
       return NextResponse.json(
         {
           success: false,
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
 
     if (!acsRes.ok) {
       const errorText = await acsRes.text().catch(() => "");
-      console.error("Error from ACS API:", acsRes.status, errorText);
+      
       return NextResponse.json(
         {
           success: false,
@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: unknown) {
     const err = error instanceof Error ? error : new Error("Unknown error");
-    console.error("Error in chat proxy API:", err);
+    
     return NextResponse.json(
       { success: false, error: err.message || "Internal Server Error" },
       { status: 500 },

@@ -45,7 +45,7 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
       router.replace("/auth");
       
     } catch (error) {
-      console.error("Logout error:", error);
+      
     }
   };
   const [toast, setToast] = useState({

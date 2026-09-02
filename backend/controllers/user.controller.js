@@ -19,7 +19,7 @@ const getAll = async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+        
 
         return res.status(500).json({
             success: false,
@@ -105,10 +105,7 @@ const create = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "CREATE USER ERROR:",
-            error
-        );
+        
 
         return res.status(400).json({
             success: false,
@@ -163,10 +160,7 @@ const update = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(
-            "UPDATE USER ERROR:",
-            error
-        );
+        
 
         return res.status(400).json({
             success: false,
@@ -230,7 +224,7 @@ const updatePassword = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    console.error(error);
+    
 
     return res.status(500).json({
       success: false,

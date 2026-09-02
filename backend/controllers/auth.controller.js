@@ -43,7 +43,7 @@ const loginController = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    console.error("LOGIN ERROR:", error);
+    
 
     if (error.message === "EMAIL_OR_PASSWORD_INVALID") {
       return res.status(401).json({
@@ -85,7 +85,7 @@ const logoutController = async (req, res) => {
       message: "Logout berhasil",
     });
   } catch (error) {
-    console.error("LOGOUT ERROR:", error);
+    
 
     return res.status(500).json({
       success: false,

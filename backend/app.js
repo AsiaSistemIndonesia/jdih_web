@@ -66,7 +66,7 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error("API Error:", err);
+  
 
   if (err.code === "LIMIT_FILE_SIZE") {
     return res.status(400).json({

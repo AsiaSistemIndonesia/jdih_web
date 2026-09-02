@@ -542,7 +542,6 @@ export default function AsistenAIContent() {
 
       setConversation((prev) => [...prev, aiMsg]);
     } catch (error) {
-      console.error("Chat error:", error);
 
       setConversation((prev) => [
         ...prev,

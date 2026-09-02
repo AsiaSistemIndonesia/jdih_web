@@ -279,10 +279,7 @@ function PenggunaContent() {
         },
 
         onError: (error: any) => {
-          console.error(
-            "DELETE ERROR:",
-            error,
-          );
+          
 
           setToast({
             open: true,

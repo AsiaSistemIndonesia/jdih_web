@@ -24,7 +24,6 @@ const getAll = async (req, res) => {
       pagination: result.pagination,
     });
   } catch (error) {
-    console.error("Get slider error:", error);
 
     return res.status(500).json({
       success: false,
@@ -56,7 +55,7 @@ const getById = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Get slider detail error:", error);
+    
 
     return res.status(500).json({
       success: false,
@@ -128,7 +127,7 @@ const create = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Create slider error:", error);
+    
 
     // ==========================================
     // HAPUS FILE JIKA DATABASE GAGAL
@@ -203,7 +202,6 @@ const update = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Update slider error:", error);
 
     if (req.file) {
       sliderService.removeUploadedImage(req.file.filename);
@@ -238,7 +236,7 @@ const remove = async (req, res) => {
       message: "Slider berhasil dihapus",
     });
   } catch (error) {
-    console.error("Delete slider error:", error);
+    
 
     return res.status(500).json({
       success: false,
@@ -258,7 +256,6 @@ const getResult = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Get slider error:", error);
 
     return res.status(500).json({
       success: false,

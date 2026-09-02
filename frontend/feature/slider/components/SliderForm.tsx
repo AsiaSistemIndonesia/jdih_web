@@ -172,7 +172,7 @@ useEffect(() => {
         },
 
         onError: (error) => {
-          console.error("UPDATE ERROR:", error);
+          
         },
       },
     );

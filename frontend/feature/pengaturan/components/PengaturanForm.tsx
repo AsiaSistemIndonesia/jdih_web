@@ -183,7 +183,7 @@ export default function PengaturanForm() {
         // ======================================================
 
         onError: (error: any) => {
-          console.error("Update pengaturan gagal:", error);
+          
 
           const message =
             error?.response?.data?.message ??

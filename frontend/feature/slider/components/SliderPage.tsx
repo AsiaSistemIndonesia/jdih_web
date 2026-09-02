@@ -414,10 +414,7 @@ function SliderContent() {
         onError: (
           error: any
         ) => {
-          console.error(
-            "DELETE ERROR:",
-            error
-          );
+          
 
           setToast({
             open: true,
@@ -458,10 +455,7 @@ function SliderContent() {
                   alt="Gambar slider"
                   className="h-full w-full object-cover"
                   onError={(event) => {
-                    console.error(
-                      "GAGAL LOAD GAMBAR:",
-                      imageUrl
-                    );
+                    
 
                     event.currentTarget.style.display =
                       "none";

@@ -10,7 +10,7 @@ const getOne = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("GET PENGATURAN ERROR:", error);
+    
 
     return res.status(500).json({
       success: false,
@@ -40,7 +40,7 @@ const update = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    console.error("UPDATE PENGATURAN ERROR:", error);
+    
 
     if (error.message === "ID pengaturan tidak valid") {
       return res.status(400).json({
@@ -74,7 +74,7 @@ const getSummary = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("GET PENGATURAN SUMMARY ERROR:", error);
+    
     return res.status(500).json({
       success: false,
       message: "Gagal mengambil summary pengaturan",
@@ -93,7 +93,7 @@ const getDokumenSummaryController = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("GET DOKUMEN SUMMARY ERROR:", error);
+    
 
     return res.status(500).json({
       success: false,

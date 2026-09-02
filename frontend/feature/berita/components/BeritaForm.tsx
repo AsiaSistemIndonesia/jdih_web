@@ -143,7 +143,7 @@ export default function BeritaForm({ mode, data, onSuccess }: BeritaFormProps) {
         },
 
         onError: (error) => {
-          console.error("CREATE BERITA ERROR:", error);
+          
         },
       });
 
@@ -151,7 +151,7 @@ export default function BeritaForm({ mode, data, onSuccess }: BeritaFormProps) {
     }
 
     if (!values.berita_id) {
-      console.error("ID berita tidak ditemukan");
+      
 
       return;
     }

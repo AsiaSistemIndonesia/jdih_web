@@ -56,7 +56,6 @@ const getAll = async (req, res) => {
       pagination: result.pagination,
     });
   } catch (error) {
-    console.error("Get berita error:", error);
 
     return res.status(500).json({
       success: false,
@@ -90,7 +89,6 @@ const getById = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Get berita detail error:", error);
 
     return res.status(500).json({
       success: false,
@@ -216,7 +214,6 @@ const create = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Create berita error:", error);
 
     // Hapus gambar jika proses gagal
     removeUploadedFile(req);
@@ -343,7 +340,6 @@ const update = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("Update berita error:", error);
 
     // Hapus gambar baru jika update gagal
     removeUploadedFile(req);
@@ -377,7 +373,7 @@ const remove = async (req, res) => {
       message: "Berita berhasil dihapus",
     });
   } catch (error) {
-    console.error("Delete berita error:", error);
+    
 
     return res.status(500).json({
       success: false,
@@ -396,7 +392,6 @@ const getWebList = async (req, res) => {
       data,
     });
   } catch (error) {
-    console.error("GET WEB BERITA ERROR:", error);
 
     return res.status(500).json({
       success: false,
@@ -421,7 +416,7 @@ const getWebListController = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    console.error("GET WEB BERITA ERROR:", error);
+    
     return res.status(500).json({
       success: false,
       message: error.message,
