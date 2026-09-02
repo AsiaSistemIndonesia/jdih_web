@@ -157,7 +157,7 @@ const getAll = async ({ search = "", page = 1, size = 10 } = {}) => {
   // BASE URL GAMBAR
   // ==========================================
 
-  const backendUrl = process.env.APP_BACKEND_URL || "http://localhost:8080";
+  const backendUrl = process.env.APP_BACKEND_URL || "https://jdih-be.asiasistem.com";
 
   const imageBaseUrl = `${backendUrl.replace(/\/$/, "")}/uploads/sliders`;
 
@@ -337,7 +337,7 @@ const removeUploadedImage = (filename) => {
 
 const getRessult = async () => {
   const backendUrl =
-    process.env.APP_BACKEND_URL || "http://localhost:8080";
+    process.env.APP_BACKEND_URL || "https://jdih-be.asiasistem.com";
 
   const imageBaseUrl =
     `${backendUrl.replace(/\/$/, "")}/uploads/sliders`;

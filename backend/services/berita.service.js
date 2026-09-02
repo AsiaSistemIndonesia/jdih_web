@@ -131,7 +131,7 @@ const getAll = async ({
     // ==========================================
 const backendUrl =
     process.env.APP_BACKEND_URL ||
-    "http://localhost:8080";
+    "https://jdih-be.asiasistem.com";
 
 const imageBaseUrl =
     `${backendUrl.replace(/\/$/, "")}/uploads/berita`;
