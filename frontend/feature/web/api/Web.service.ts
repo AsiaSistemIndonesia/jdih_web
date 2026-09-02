@@ -71,7 +71,6 @@ export const Login = async (
   return res.data.data;
 };
 
-
 export const getSession = async () => {
   const res = await api.get("/login/session");
   return res.data;

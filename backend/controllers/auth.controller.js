@@ -1,6 +1,7 @@
 const authService = require("../services/auth.service");
 const jwt = require("jsonwebtoken");
 
+
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -12,10 +13,7 @@ const loginController = async (req, res) => {
       });
     }
 
-    const user = await authService.loginService(
-      email,
-      password
-    );
+    const user = await authService.loginService(email, password);
 
     const token = jwt.sign(
       {
@@ -30,13 +28,13 @@ const loginController = async (req, res) => {
         expiresIn: "8h",
       }
     );
-    
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 8,
+      path: "/",
     });
 
     return res.status(200).json({
@@ -45,7 +43,7 @@ const loginController = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    
+    console.error("LOGIN ERROR:", error);
 
     if (error.message === "EMAIL_OR_PASSWORD_INVALID") {
       return res.status(401).json({
@@ -61,37 +59,19 @@ const loginController = async (req, res) => {
   }
 };
 
+
+
 const sessionController = async (req, res) => {
-  try {
-    const user = await authService.getCurrentUserService(
-      req.user.id
-    );
 
-    
+  const user = await authService.getCurrentUserService(req.user.id);
 
-    return res.status(200).json({
-      success: true,
-      message: "Session aktif",
-      data: user,
-    });
-  } catch (error) {
-    console.error("SESSION ERROR:", error);
-
-    if (error.message === "USER_NOT_FOUND") {
-      res.clearCookie("access_token");
-
-      return res.status(401).json({
-        success: false,
-        message: "User tidak ditemukan",
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: "Terjadi kesalahan pada server",
-    });
-  }
+  return res.status(200).json({
+    success: true,
+    message: "Session aktif",
+    data: user,
+  });
 };
+
 const logoutController = async (req, res) => {
   try {
     res.clearCookie("access_token", {

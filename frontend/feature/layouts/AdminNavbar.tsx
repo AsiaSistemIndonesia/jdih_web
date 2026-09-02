@@ -33,7 +33,7 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const logoutMutation = LogoutHook();
   const sessionHooks = SessionHook();
-  console.log(sessionHooks);
+  
   
   
   const handleLogout = async () => {

@@ -11,7 +11,7 @@ export function getCookie(name: string): string | null {
 
 export const createApiClient = (servicePrefix: string) => {
   const api = axios.create({
-    baseURL: (process.env.NEXT_PUBLIC_APP_BACKEND_URL + '/api') + servicePrefix,
+    baseURL: ("https://jdih-be.asiasistem.com/api" ) + servicePrefix,
   });
   
 
@@ -27,19 +27,19 @@ export const createApiClient = (servicePrefix: string) => {
   });
 
   // Optional: Intercept responses to handle 401/403 globally
-  // api.interceptors.response.use(
-  //   (response) => response,
-  //   (error) => {
-  //     if (error.response?.status === 401) {
-  //       // Handle unauthorized (e.g., clear cookie and redirect)
-  //       if (typeof document !== 'undefined') {
-  //         document.cookie = "access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-  //         window.location.href = '/auth';
-  //       }
-  //     }
-  //     return Promise.reject(error);
-  //   }
-  // );
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401) {
+        // Handle unauthorized (e.g., clear cookie and redirect)
+        if (typeof document !== 'undefined') {
+          document.cookie = "access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+          window.location.href = '/auth';
+        }
+      }
+      return Promise.reject(error);
+    }
+  );
 
   return api;
 };
