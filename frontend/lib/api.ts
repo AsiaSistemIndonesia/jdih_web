@@ -43,7 +43,6 @@
 
 //   return api;
 // };
-
 import axios from "axios";
 
 export function getCookie(name: string): string | null {
@@ -65,20 +64,15 @@ export const createApiClient = (servicePrefix: string = "") => {
     withCredentials: true,
   });
 
-  api.interceptors.request.use(
-    (config) => {
-      const token = getCookie("access_token");
+  api.interceptors.request.use((config) => {
+    const token = getCookie("access_token");
 
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-  );
+
+    return config;
+  });
 
   return api;
 };
