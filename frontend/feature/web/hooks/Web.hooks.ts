@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createKontak,
+  fetchBeritaLain,
   fetchByIdBerita,
   fetchByIdWebDokumenHukum,
   fetchWebBeritaAll,
@@ -15,6 +16,7 @@ import {
   getLogout,
   getSession,
   Login,
+  updateViews,
 } from "../api/Web.service";
 import { toast } from "sonner";
 import { FetchWebBeritaParams } from "../types/Web.type";
@@ -64,6 +66,14 @@ export const useWebDokumenHukumHookAll = () => {
   return useQuery({
     queryKey: ["DokumenHukum-web"],
     queryFn: fetchWebDokumenHukumAll,
+  });
+};
+
+export const useWebBeritaRelated = (beritaId?: any) => {
+  return useQuery({
+    queryKey: ["berita-lain", beritaId],
+    queryFn: () => fetchBeritaLain(beritaId!),
+    enabled: !!beritaId,
   });
 };
 
@@ -178,5 +188,11 @@ export const LogoutHook = () => {
         queryKey: ["auth-session"],
       });
     },
+  });
+};
+
+export const useUpdateViews = () => {
+  return useMutation({
+    mutationFn: (beritaId: number) => updateViews(beritaId),
   });
 };

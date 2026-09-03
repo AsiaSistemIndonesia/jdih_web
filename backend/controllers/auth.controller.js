@@ -31,7 +31,7 @@ const loginController = async (req, res) => {
 
     res.cookie("access_token", token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: "lax",
       maxAge: 1000 * 60 * 60 * 8,
       path: "/",
@@ -76,7 +76,7 @@ const logoutController = async (req, res) => {
   try {
     res.clearCookie("access_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "lax",
     });
 

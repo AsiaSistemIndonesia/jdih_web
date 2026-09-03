@@ -325,20 +325,49 @@ const getWebListPaginationService = async ({
     size = 10,
 } = {}) => {
 
-    // ========================================================
-    // PANGGIL REPOSITORY
-    // ========================================================
 
     const result = await beritaRepository.getWebListPagination({
         page,
         size,
     });
 
-    // ========================================================
-    // RETURN HASIL
-    // ========================================================
-
     return result;
+};
+
+const getLatestBerita = async () => {
+    return await beritaRepository.findLatest();
+};
+
+const incrementViews = async (beritaId) => {
+    const id = Number(beritaId);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        const error = new Error("ID berita tidak valid");
+        error.statusCode = 400;
+        throw error;
+    }
+
+    const berita = await beritaRepository.incrementViews(id);
+
+    if (!berita) {
+        const error = new Error("Berita tidak ditemukan");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    return berita;
+};
+
+const getOtherBerita = async (beritaId) => {
+    const id = Number(beritaId);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        const error = new Error("ID berita tidak valid");
+        error.statusCode = 400;
+        throw error;
+    }
+
+    return await beritaRepository.findOtherBerita(id);
 };
 
 module.exports = {
@@ -349,5 +378,8 @@ module.exports = {
     remove,
     removeUploadedImage,
     getWebList,
-    getWebListPaginationService
+    getWebListPaginationService,
+    getLatestBerita,
+    incrementViews,
+    getOtherBerita
 };

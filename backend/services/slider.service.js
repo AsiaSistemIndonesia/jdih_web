@@ -28,29 +28,13 @@ const parseStatus = (status, defaultValue = true) => {
   return status === true || status === "true" || status === "1" || status === 1;
 };
 
-/**
- * GET ALL
- */
-/**
- * ==========================================
- * GET ALL
- * SEARCH + PAGINATION
- * ==========================================
- */
 const getAll = async ({ search = "", page = 1, size = 10 } = {}) => {
-  // ==========================================
-  // PAGE
-  // ==========================================
-
+  
   page = Number(page);
 
   if (!Number.isInteger(page) || page < 1) {
     page = 1;
   }
-
-  // ==========================================
-  // SIZE
-  // ==========================================
 
   size = Number(size);
 
@@ -63,27 +47,11 @@ const getAll = async ({ search = "", page = 1, size = 10 } = {}) => {
     size = 100;
   }
 
-  // ==========================================
-  // SEARCH
-  // ==========================================
-
   search = String(search || "").trim();
-
-  // ==========================================
-  // OFFSET
-  // ==========================================
 
   const offset = (page - 1) * size;
 
-  // ==========================================
-  // SEARCH VALUE
-  // ==========================================
-
   const searchValue = `%${search}%`;
-
-  // ==========================================
-  // WHERE
-  // ==========================================
 
   const whereClause = search
     ? `
@@ -92,10 +60,6 @@ const getAll = async ({ search = "", page = 1, size = 10 } = {}) => {
                 OR keterangan ILIKE $1
         `
     : "";
-
-  // ==========================================
-  // QUERY DATA
-  // ==========================================
 
   const dataQuery = `
         SELECT
@@ -113,15 +77,7 @@ const getAll = async ({ search = "", page = 1, size = 10 } = {}) => {
         OFFSET $${search ? 3 : 2}
     `;
 
-  // ==========================================
-  // DATA VALUES
-  // ==========================================
-
   const dataValues = search ? [searchValue, size, offset] : [size, offset];
-
-  // ==========================================
-  // QUERY TOTAL
-  // ==========================================
 
   const countQuery = `
         SELECT COUNT(*) AS total
@@ -131,49 +87,25 @@ const getAll = async ({ search = "", page = 1, size = 10 } = {}) => {
 
   const countValues = search ? [searchValue] : [];
 
-  // ==========================================
-  // EKSEKUSI
-  // ==========================================
-
   const [dataResult, countResult] = await Promise.all([
     pool.query(dataQuery, dataValues),
 
     pool.query(countQuery, countValues),
   ]);
 
-  // ==========================================
-  // TOTAL
-  // ==========================================
-
   const total = Number(countResult.rows[0].total);
 
-  // ==========================================
-  // TOTAL PAGES
-  // ==========================================
-
   const totalPages = total > 0 ? Math.ceil(total / size) : 0;
-
-  // ==========================================
-  // BASE URL GAMBAR
-  // ==========================================
 
   const backendUrl = process.env.APP_BACKEND_URL || "https://jdih-be.asiasistem.com";
 
   const imageBaseUrl = `${backendUrl.replace(/\/$/, "")}/uploads/sliders`;
-
-  // ==========================================
-  // FORMAT DATA
-  // ==========================================
 
   const data = dataResult.rows.map((item) => ({
     ...item,
 
     gambar: item.gambar ? `${imageBaseUrl}/${item.gambar}` : null,
   }));
-
-  // ==========================================
-  // RETURN
-  // ==========================================
 
   return {
     data,

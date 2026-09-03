@@ -33,20 +33,17 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const logoutMutation = LogoutHook();
   const sessionHooks = SessionHook();
-  
-  
-  
+  const nama = sessionHooks ? (sessionHooks.data?.data?.nama ?? "Admin") : "";
+  const id_data = sessionHooks ? (sessionHooks.data?.data?.id ?? "Administrator") : "";
+
   const handleLogout = async () => {
-    // if (logoutMutation.isPending) return;
+    if (logoutMutation.isPending) return;
 
     try {
-      // await logoutMutation.mutateAsync();
+      await logoutMutation.mutateAsync();
 
       router.replace("/auth");
-      
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
   const [toast, setToast] = useState({
     open: false,
@@ -72,7 +69,8 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
     setShowConfirmPassword(false);
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = (id:any) => {
+    
     if (!newPassword.trim()) {
       setToast({
         open: true,
@@ -102,8 +100,6 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
       });
       return;
     }
-
-    const id = 1;
 
     updatePassword.mutate(
       {
@@ -181,7 +177,7 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
 
                 <div className="hidden text-left sm:block">
                   <p className="text-[13px] font-normal text-slate-700">
-                    Administrator
+                    {nama}
                   </p>
 
                   <p className="text-[11px] font-normal text-slate-400">
@@ -207,14 +203,11 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
                     <p className="text-[12px] font-normal text-slate-400">
                       Akun
                     </p>
-
                     <p className="mt-0.5 text-[14px] font-normal text-slate-700">
-                      Administrator
+                      {nama}
                     </p>
                   </div>
-
                   <div className="my-1 h-px bg-slate-100" />
-
                   <button
                     type="button"
                     onClick={handleOpenPasswordModal}
@@ -223,14 +216,12 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
                     <LockKeyhole size={17} className="text-slate-400" />
                     <span>Ganti Password</span>
                   </button>
-
                   <div className="my-1 h-px bg-slate-100" />
-
                   <button
                     type="button"
                     onClick={handleLogout}
                     disabled={logoutMutation.isPending}
-                    className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <LogOut size={18} />
                     {logoutMutation.isPending ? "Keluar..." : "Logout"}
@@ -241,7 +232,6 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
           </div>
         </div>
       </header>
-
       {passwordModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 px-4 backdrop-blur-sm">
           <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
@@ -250,18 +240,15 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                   <LockKeyhole size={19} />
                 </div>
-
                 <div>
                   <h2 className="text-[17px] font-normal text-slate-800">
                     Ganti Password
                   </h2>
-
                   <p className="mt-0.5 text-[11px] font-normal text-slate-400">
                     Perbarui password akun administrator
                   </p>
                 </div>
               </div>
-
               <button
                 type="button"
                 onClick={handleClosePasswordModal}
@@ -271,7 +258,6 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
                 <X size={18} />
               </button>
             </div>
-
             <div className="space-y-4 px-6 py-6">
               <div>
                 <label className="mb-1.5 block text-[13px] font-normal text-slate-700">
@@ -376,7 +362,7 @@ export default function AdminNavbar({ onMenuClick }: AdminNavbarProps) {
 
               <button
                 type="button"
-                onClick={handleChangePassword}
+                onClick={() => handleChangePassword(id_data)}
                 disabled={isSubmitting}
                 className="rounded-xl bg-blue-600 px-5 py-2.5 text-[13px] font-normal text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
               >

@@ -16,81 +16,7 @@ import Link from "next/link";
 
 import { AppSelect, SelectOption } from "./ui/app-select";
 import { useDokumenHukumWebList } from "@/feature/web";
-
-
-const JENIS_OPTIONS: SelectOption[] = [
-  {
-    value: "",
-    label: "Semua Kategori",
-  },
-  {
-    value: "Perundang-Undangan",
-    label: "Perundang-Undangan",
-  },
-  {
-    value: "Keputusan",
-    label: "Keputusan",
-  },
-  {
-    value: "Peraturan",
-    label: "Peraturan",
-  },
-];
-
-const TAHUN_OPTIONS: SelectOption[] = [
-  {
-    value: "",
-    label: "Semua Tahun",
-  },
-  ...Array.from({ length: 15 }, (_, i) => {
-    const year = 2026 - i;
-
-    return {
-      value: String(year),
-      label: String(year),
-    };
-  }),
-];
-
-const BIDANG_OPTIONS: SelectOption[] = [
-  {
-    value: "",
-    label: "Semua Bidang Hukum",
-  },
-  {
-    value: "hukum-umum",
-    label: "Hukum Umum",
-  },
-  {
-    value: "hukum-adat",
-    label: "Hukum Adat",
-  },
-  {
-    value: "hukum-agraria",
-    label: "Hukum Agraria",
-  },
-  {
-    value: "hukum-administrasi-negara",
-    label: "Hukum Administrasi Negara",
-  },
-  {
-    value: "hukum-keuangan-negara",
-    label: "Hukum Keuangan Negara",
-  },
-  {
-    value: "hukum-kepegawaian",
-    label: "Hukum Kepegawaian",
-  },
-  {
-    value: "hukum-tata-negara",
-    label: "Hukum Tata Negara",
-  },
-  {
-    value: "peraturan-pemerintah",
-    label: "Peraturan Pemerintah",
-  },
-];
-
+import { bidangOptions, kategoriOptions, tahunOptions } from "@/constanta/GlobalConstanta";
 
 function getPageNumbers(
   current: number,
@@ -137,9 +63,6 @@ function getPageNumbers(
   return result;
 }
 
-// ============================================================
-// TYPE
-// ============================================================
 
 type SearchParams = {
   search: string;
@@ -150,35 +73,23 @@ type SearchParams = {
   bidang: string;
 };
 
-// ============================================================
-// COMPONENT
-// ============================================================
-
 export function ProdukHukumTable() {
-  // ============================================================
-  // FORM STATE
-  // ============================================================
-
   const [keyword, setKeyword] = useState("");
 
   const [jenis, setJenis] =
     useState<SelectOption | null>(
-      JENIS_OPTIONS[0],
+      kategoriOptions[0],
     );
 
   const [tahun, setTahun] =
     useState<SelectOption | null>(
-      TAHUN_OPTIONS[0],
+      tahunOptions[0],
     );
 
   const [bidang, setBidang] =
     useState<SelectOption | null>(
-      BIDANG_OPTIONS[0],
+      bidangOptions[0],
     );
-
-  // ============================================================
-  // API SEARCH STATE
-  // ============================================================
 
   const [searchParams, setSearchParams] =
     useState<SearchParams>({
@@ -190,10 +101,6 @@ export function ProdukHukumTable() {
       bidang: "",
     });
 
-  // ============================================================
-  // QUERY
-  // ============================================================
-
   const {
     data,
     isLoading,
@@ -202,9 +109,6 @@ export function ProdukHukumTable() {
     searchParams,
   );
 
-  // ============================================================
-  // DATA
-  // ============================================================
 
   const peraturan = useMemo(() => {
     return (data as any)?.data ?? [];
@@ -232,17 +136,9 @@ export function ProdukHukumTable() {
     ),
   );
 
-  // ============================================================
-  // PAGE
-  // ============================================================
-
   const currentPage = Number(
     searchParams.page ?? 1,
   );
-
-  // ============================================================
-  // RANGE
-  // ============================================================
 
   const rangeStart =
     totalData === 0
@@ -256,18 +152,10 @@ export function ProdukHukumTable() {
     totalData,
   );
 
-  // ============================================================
-  // PAGE NUMBERS
-  // ============================================================
-
   const pageNumbers = getPageNumbers(
     currentPage,
     totalPages,
   );
-
-  // ============================================================
-  // CARI
-  // ============================================================
 
   const handleCari = () => {
     setSearchParams({
@@ -294,18 +182,14 @@ export function ProdukHukumTable() {
     });
   };
 
-  // ============================================================
-  // RESET
-  // ============================================================
-
   const handleReset = () => {
     setKeyword("");
 
-    setJenis(JENIS_OPTIONS[0]);
+    setJenis(kategoriOptions[0]);
 
-    setTahun(TAHUN_OPTIONS[0]);
+    setTahun(tahunOptions[0]);
 
-    setBidang(BIDANG_OPTIONS[0]);
+    setBidang(bidangOptions[0]);
 
     setSearchParams({
       search: "",
@@ -317,10 +201,6 @@ export function ProdukHukumTable() {
     });
   };
 
-  // ============================================================
-  // ENTER
-  // ============================================================
-
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
@@ -328,10 +208,6 @@ export function ProdukHukumTable() {
       handleCari();
     }
   };
-
-  // ============================================================
-  // PAGINATION
-  // ============================================================
 
   const handlePageChange = (
     page: number,
@@ -355,9 +231,6 @@ export function ProdukHukumTable() {
     });
   };
 
-  // ============================================================
-  // JAGA PAGE
-  // ============================================================
 
   useEffect(() => {
     if (
@@ -374,16 +247,8 @@ export function ProdukHukumTable() {
     totalPages,
   ]);
 
-  // ============================================================
-  // RENDER
-  // ============================================================
-
   return (
     <div className="space-y-5">
-
-      {/* ======================================================
-          SEARCH / FILTER
-      ====================================================== */}
 
       <div
         className="
@@ -459,7 +324,7 @@ export function ProdukHukumTable() {
           <div className="lg:w-48">
             <AppSelect
               options={
-                JENIS_OPTIONS
+                kategoriOptions
               }
               value={jenis}
               onChange={setJenis}
@@ -474,7 +339,7 @@ export function ProdukHukumTable() {
           <div className="lg:w-32">
             <AppSelect
               options={
-                TAHUN_OPTIONS
+                tahunOptions
               }
               value={tahun}
               onChange={setTahun}
@@ -489,7 +354,7 @@ export function ProdukHukumTable() {
           <div className="lg:min-w-[16rem] lg:flex-1">
             <AppSelect
               options={
-                BIDANG_OPTIONS
+                bidangOptions
               }
               value={bidang}
               onChange={setBidang}
@@ -561,11 +426,6 @@ export function ProdukHukumTable() {
           </button>
         </div>
       </div>
-
-      {/* ======================================================
-          ACTIVE FILTER
-      ====================================================== */}
-
       {(searchParams.search ||
         searchParams.kategori ||
         searchParams.tahun ||
@@ -642,9 +502,6 @@ export function ProdukHukumTable() {
         </div>
       )}
 
-      {/* ======================================================
-          RESULT COUNT
-      ====================================================== */}
 
       <p className="text-sm text-muted-foreground">
         Menampilkan{" "}
@@ -657,10 +514,6 @@ export function ProdukHukumTable() {
         </span>{" "}
         data
       </p>
-
-      {/* ======================================================
-          RESULT LIST
-      ====================================================== */}
 
       <div className="space-y-3">
 

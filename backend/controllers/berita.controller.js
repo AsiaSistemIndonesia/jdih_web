@@ -424,6 +424,94 @@ const getWebListController = async (req, res) => {
   }
 };
 
+const getLatest = async (req, res) => {
+    try {
+        const data = await beritaService.getLatestBerita();
+
+        return res.status(200).json({
+            success: true,
+            message: "Data berita berhasil diambil",
+            data,
+        });
+    } catch (error) {
+        console.error("GET LATEST BERITA ERROR:", error);
+
+        return res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message || "Terjadi kesalahan pada server",
+        });
+    }
+};
+
+const incrementViews = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const cookieName = `berita_viewed_${id}`;
+
+        if (req.cookies && req.cookies[cookieName]) {
+            return res.status(200).json({
+                success: true,
+                updated: false,
+                message: "Views sudah dihitung sebelumnya",
+            });
+        }
+
+        const result = await beritaService.incrementViews(id);
+
+        if (!result) {
+            return res.status(404).json({
+                success: false,
+                message: "Berita tidak ditemukan",
+            });
+        }
+
+        // Cookie 5 jam
+        res.cookie(cookieName, "1", {
+            maxAge: 5 * 60 * 60 * 1000,
+            httpOnly: true,
+            sameSite: "lax",
+            secure: false, // localhost
+        });
+
+        return res.status(200).json({
+            success: true,
+            updated: true,
+            data: result,
+        });
+
+    } catch (error) {
+        console.error("UPDATE VIEWS ERROR:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+const getOtherBerita = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const data = await beritaService.getOtherBerita(id);
+
+        return res.status(200).json({
+            success: true,
+            message: "5 berita lainnya berhasil diambil",
+            data,
+        });
+
+    } catch (error) {
+        console.error("GET OTHER BERITA ERROR:", error);
+
+        return res.status(error.statusCode || 500).json({
+            success: false,
+            message: error.message || "Gagal mengambil berita lainnya",
+        });
+    }
+};
+
 module.exports = {
   getAll,
   getById,
@@ -432,4 +520,7 @@ module.exports = {
   remove,
   getWebList,
   getWebListController,
+  getLatest,
+  incrementViews,
+  getOtherBerita
 };

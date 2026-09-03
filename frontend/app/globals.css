@@ -88,3 +88,170 @@
     transform: scaleX(0);
   }
 }
+
+.jdih-float {
+  animation: jdih-float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.jdih-archive {
+  animation: jdih-archive 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.jdih-archive-glow {
+  background: radial-gradient(
+    circle,
+    rgba(19, 88, 168, 0.11),
+    rgba(201, 161, 90, 0.035) 45%,
+    transparent 72%
+  );
+  animation: jdih-glow 5s ease-in-out infinite;
+}
+
+.jdih-orbit-line {
+  animation: jdih-orbit 18s linear infinite;
+}
+
+.jdih-document-main {
+  animation: jdih-document-main 5s ease-in-out infinite;
+}
+
+.jdih-document-left {
+  animation: jdih-document-left 5s ease-in-out infinite;
+}
+
+.jdih-document-right {
+  animation: jdih-document-right 5s ease-in-out infinite;
+}
+
+.jdih-search {
+  animation: jdih-search 4s ease-in-out infinite;
+}
+
+.jdih-dot {
+  animation: jdih-dot 3.5s ease-in-out infinite;
+}
+
+.jdih-dot-delay {
+  animation-delay: 1.4s;
+}
+
+.jdih-star {
+  animation: jdih-star 3s ease-in-out infinite;
+}
+
+@keyframes jdih-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes jdih-archive {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+@keyframes jdih-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+
+  50% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+@keyframes jdih-orbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes jdih-document-main {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+@keyframes jdih-document-left {
+  0%,
+  100% {
+    transform: rotate(-8deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(-5deg) translateY(-7px);
+  }
+}
+
+@keyframes jdih-document-right {
+  0%,
+  100% {
+    transform: rotate(8deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(5deg) translateY(-6px);
+  }
+}
+
+@keyframes jdih-search {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(3px, -5px) rotate(-5deg);
+  }
+}
+
+@keyframes jdih-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0) scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.15);
+  }
+}
+
+@keyframes jdih-star {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8) rotate(0deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(15deg);
+  }
+}

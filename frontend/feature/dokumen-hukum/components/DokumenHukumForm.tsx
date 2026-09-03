@@ -35,7 +35,7 @@ import {
   useUpdateDokumenHukum,
 } from "../hooks/DokumenHukum.hooks";
 import FormSelect2 from "@/components/ui/FormSelect2";
-import { bidangOptions, kategoriOptions, statusOptions, subjectOptions, tipeDokumenOptions } from "@/constanta/GlobalConstanta";
+import { bidangOptions, kategoriOptions, statusOptions, subjectOptions, tahunOptions, tipeDokumenOptions } from "@/constanta/GlobalConstanta";
 
 interface DokumenHukumFormProps {
   mode: "create" | "edit";
@@ -749,18 +749,17 @@ export default function DokumenHukumForm({
             disabled={isSubmitting}
           />
 
-          {/* TAHUN */}
-
-          <FormInput
-            type="number"
+          <FormSelect2
+            name="tahun"
+            control={control}
             label="Tahun"
             required
-            placeholder="Masukkan tahun"
-            {...register("tahun", {
-              valueAsNumber: true,
-            })}
+            placeholder="Pilih tahun..."
+            options={tahunOptions}
             error={errors.tahun?.message}
             disabled={isSubmitting}
+            isSearchable
+            isClearable
           />
 
           <FormSelect2
@@ -776,7 +775,7 @@ export default function DokumenHukumForm({
             isClearable
           />
 
-          {/* TEMPAT */}
+          
 
           <FormInput
             type="text"

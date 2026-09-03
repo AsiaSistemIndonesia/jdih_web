@@ -684,7 +684,7 @@ export default function AsistenAIContent() {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               disabled={isTyping}
-              placeholder="Tanyakan seputar hukum, regulasi, atau kebijakan intelijen..."
+              placeholder="Tanyakan seputar peraturan,hukum..."
               className="flex-1 resize-none rounded-xl border p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-60"
               rows={1}
             />

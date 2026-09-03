@@ -1,14 +1,7 @@
-import type { Metadata } from "next";
 import { ScrollText } from "lucide-react";
 import { ProdukHukumTable } from "@/components/produk-hukum-table";
 import { Navbar } from "@/components/navbar";
 import { SiteFooter } from "@/components/site-footer";
-
-export const metadata: Metadata = {
-  title: "Produk Hukum — JDIH BIN",
-  description:
-    "Daftar produk hukum, peraturan, dan undang-undang Badan Intelijen Negara Republik Indonesia.",
-};
 
 export default function ProdukHukumPage() {
   return (

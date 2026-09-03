@@ -107,7 +107,7 @@ function Counter({ target }: { target: number }) {
 
 export function StatsSummary() {
   const { data } = useWebSumaryHookAll();
-
+  
   const summary = (data as any)?.data ?? {};
 
   return (

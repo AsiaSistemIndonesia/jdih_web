@@ -69,11 +69,13 @@ const getDokumenSummary = async () => {
   const result = await pool.query(query);
   return result.rows[0];
 };
+
 const getBeritaSummary = async () => {
   const query = ` SELECT COUNT(*)::int AS total FROM berita `;
   const result = await pool.query(query);
   return result.rows[0];
 };
+
 const getSummary = async () => {
   const [dokumen, berita] = await Promise.all([
     getDokumenSummary(),
