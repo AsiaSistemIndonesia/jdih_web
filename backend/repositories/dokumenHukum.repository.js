@@ -530,6 +530,68 @@ const findAllWeb = async ({
     };
 };
 
+const findRelated = async (id) => {
+    const query = `
+        SELECT 
+            id,
+            judul,
+            kategori,
+            nomor,
+            tahun,
+            file_abstrak,
+            file_dokumen,
+            bidang,
+            tipe_dokumen,
+            tempat_penetapan,
+            tanggal_penetapan,
+            tanggal_berlaku,
+            tanggal_pengundangan,
+            sumber,
+            subjek,
+            status,
+            dilihat,
+            download,
+            created_at,
+            updated_at
+        FROM dokumen_hukum
+        WHERE deleted_at IS NULL
+          AND id != $1
+        ORDER BY id DESC
+        LIMIT 3
+    `;
+
+    const result = await pool.query(query, [id]);
+
+    return result.rows;
+};
+
+const dynamisDownload = async (dokumenId) => {
+  const query = `
+    UPDATE dokumen_hukum
+    SET download_count = COALESCE(download_count, 0) + 1,
+        updated_at = NOW()
+    WHERE dokumen_id = $1
+    RETURNING dokumen_id, download_count, preview_count
+  `;
+
+  const { rows } = await db.query(query, [dokumenId]);
+
+  return rows[0] || null;
+};
+
+const dinamisPreview = async (dokumenId) => {
+  const query = `
+    UPDATE dokumen_hukum
+    SET preview_count = COALESCE(preview_count, 0) + 1,
+        updated_at = NOW()
+    WHERE dokumen_id = $1
+    RETURNING dokumen_id, download_count, preview_count
+  `;
+
+  const { rows } = await db.query(query, [dokumenId]);
+
+  return rows[0] || null;
+};
 
 module.exports = {
     findAll,
@@ -541,5 +603,8 @@ module.exports = {
     incrementDownload,
     getSummary,
     getList,
-    findAllWeb
+    findAllWeb,
+    findRelated,
+    dynamisDownload,
+    dinamisPreview
 };

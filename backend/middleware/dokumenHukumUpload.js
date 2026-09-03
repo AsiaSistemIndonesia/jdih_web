@@ -2,9 +2,6 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// ============================================================
-// UPLOAD PATH
-// ============================================================
 
 const uploadPath = path.join(
     process.cwd(),
@@ -18,10 +15,6 @@ if (!fs.existsSync(uploadPath)) {
         recursive: true,
     });
 }
-
-// ============================================================
-// STORAGE
-// ============================================================
 
 const storage = multer.diskStorage({
 
@@ -44,10 +37,6 @@ const storage = multer.diskStorage({
     },
 });
 
-// ============================================================
-// FILE FILTER
-// ============================================================
-
 const fileFilter = (req, file, cb) => {
 
     const fieldName = file.fieldname.trim();
@@ -57,10 +46,6 @@ const fileFilter = (req, file, cb) => {
         "file_dokumen",
     ];
 
-    // --------------------------------------------------------
-    // Validasi field
-    // --------------------------------------------------------
-
     if (!allowedFields.includes(fieldName)) {
         return cb(
             new multer.MulterError(
@@ -69,10 +54,6 @@ const fileFilter = (req, file, cb) => {
             )
         );
     }
-
-    // --------------------------------------------------------
-    // Validasi PDF
-    // --------------------------------------------------------
 
     if (
         file.mimetype !==
@@ -88,10 +69,6 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
 };
 
-// ============================================================
-// MULTER
-// ============================================================
-
 const dokumenHukumUpload = multer({
 
     storage,
@@ -103,9 +80,5 @@ const dokumenHukumUpload = multer({
         files: 2,
     },
 });
-
-// ============================================================
-// EXPORT
-// ============================================================
 
 module.exports = dokumenHukumUpload;

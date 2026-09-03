@@ -39,6 +39,11 @@ export const fetchBeritaLain = async (id:any): Promise<any> => {
   return res.data;
 };
 
+export const fetchDokumenHukumLain = async (id:any): Promise<any> => {
+  const res = await api.get(`/dokumen-hukum/${id}/related`);
+  return res.data;
+};
+
 export const fetchWebDokumenHukum = async (
   params: PaginationParams,
 ): Promise<SpringPage<DokumenHukum>> => {

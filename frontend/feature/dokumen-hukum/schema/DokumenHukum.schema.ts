@@ -35,39 +35,21 @@ export const DokumenHukumSchema = z.object({
   // ============================================================
 
   tahun: z
-    .number({
+    .coerce.number({
       message: "Tahun wajib diisi",
-    })
-    .min(1900, "Tahun tidak valid")
-    .max(2100, "Tahun tidak valid"),
-
-  // ============================================================
-  // BIDANG
-  // ============================================================
+    }),
 
   bidang: z
     .string()
     .min(1, "Bidang wajib dipilih"),
 
-  // ============================================================
-  // TIPE DOKUMEN
-  // ============================================================
-
   tipe_dokumen: z
     .string()
     .min(1, "Tipe dokumen wajib dipilih"),
 
-  // ============================================================
-  // TEMPAT PENETAPAN
-  // ============================================================
-
   tempat_penetapan: z
     .string()
     .min(1, "Tempat penetapan wajib diisi"),
-
-  // ============================================================
-  // TANGGAL
-  // ============================================================
 
   tanggal_penetapan: z
     .string()
@@ -81,42 +63,16 @@ export const DokumenHukumSchema = z.object({
     .string()
     .min(1, "Tanggal berlaku wajib diisi"),
 
-  // ============================================================
-  // SUMBER
-  // ============================================================
-
   sumber: z
     .string()
     .min(1, "Sumber wajib diisi"),
-
-  // ============================================================
-  // SUBJECT
-  // ============================================================
-
   subject: z
     .string()
     .min(1, "Subject wajib dipilih"),
 
-  // ============================================================
-  // STATUS
-  // ============================================================
-
   status: z
     .string()
     .min(1, "Status wajib dipilih"),
-
-  // ============================================================
-  // FILE ABSTRAK
-  // Wajib diisi
-  // Bisa File baru atau string file lama
-  // ============================================================
-
-
-// ============================================================
-// FILE ABSTRAK
-// Wajib diisi
-// Bisa File baru, string file lama, atau null saat awal form
-// ============================================================
 
 file_abstrak: z
   .union([
@@ -126,17 +82,14 @@ file_abstrak: z
   ])
   .refine(
     (value) => {
-      // NULL = belum memilih file
       if (value === null) {
         return false;
       }
 
-      // STRING = file lama dari database
       if (typeof value === "string") {
         return value.trim().length > 0;
       }
 
-      // FILE = file baru
       return true;
     },
     {
@@ -145,7 +98,6 @@ file_abstrak: z
   )
   .refine(
     (value) => {
-      // Null dan file lama tidak perlu validasi ukuran
       if (
         value === null ||
         typeof value === "string"
@@ -162,7 +114,6 @@ file_abstrak: z
   )
   .refine(
     (value) => {
-      // Null dan file lama tidak perlu validasi tipe
       if (
         value === null ||
         typeof value === "string"
@@ -177,12 +128,6 @@ file_abstrak: z
         "File abstrak harus berformat PDF",
     }
   ),
-
-// ============================================================
-// FILE DOKUMEN
-// Wajib diisi
-// Bisa File baru, string file lama, atau null saat awal form
-// ============================================================
 
 file_dokumen: z
   .union([

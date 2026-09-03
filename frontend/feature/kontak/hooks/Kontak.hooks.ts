@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { toast } from "sonner";
-import { createKontak, fetchKontak } from "../api/Kontak.service";
+import { createKontak, deleteKontak, fetchKontak } from "../api/Kontak.service";
 
 const getErrorMessage = (error: any) => {
   return (
@@ -33,6 +33,26 @@ export const useCreateKontak = () => {
 
     onSuccess: () => {
       toast.success("Berhasil tambah data");
+
+      qc.invalidateQueries({
+        queryKey: ["Kontak"],
+      });
+    },
+
+    onError: (error: any) => {
+      toast.error(getErrorMessage(error));
+    },
+  });
+};
+
+export const useDeleteKontak = () => {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteKontak,
+
+    onSuccess: () => {
+      toast.success("Berhasil hapus data");
 
       qc.invalidateQueries({
         queryKey: ["Kontak"],

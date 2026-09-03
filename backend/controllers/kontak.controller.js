@@ -50,7 +50,29 @@ const findAll = async (req, res) => {
   }
 };
 
+const removeById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await kontakService.removeById(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Kontak berhasil dihapus",
+      data: result,
+    });
+  } catch (error) {
+    console.error("DELETE KONTAK ERROR:", error);
+
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   create,
   findAll,
+  removeById
 };

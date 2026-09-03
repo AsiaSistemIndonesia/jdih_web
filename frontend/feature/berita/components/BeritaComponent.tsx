@@ -179,12 +179,9 @@ function BeritaComponent() {
   };
 
   const handleView = (row: Berita) => {
-    console.log("Detail Berita:", row);
+    
   };
 
-  // ============================================================
-  // DELETE
-  // ============================================================
 
   const [deleteOpen, setDeleteOpen] = useState(false);
 

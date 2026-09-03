@@ -16,7 +16,10 @@ import {
 } from "lucide-react";
 
 import { APP_BASE_URL } from "@/constanta/GlobalConstanta";
-import { useDokumenHukumWebDetail } from "@/feature/web";
+import {
+  useDokumenHukumWebDetail,
+  useWebDokumenHukumRelated,
+} from "@/feature/web";
 import { Navbar } from "./navbar";
 import { SiteFooter } from "./site-footer";
 import Image from "next/image";
@@ -74,7 +77,9 @@ type ActiveView = "metadata" | "teks" | "preview-abstrak" | "preview-peraturan";
 
 export function ProdukHukumDetail({ id }: { id: number }) {
   const { data, isLoading, isError, refetch } = useDokumenHukumWebDetail(id);
-
+  const { data: relatedResponse, isLoading: relatedLoading } =
+    useWebDokumenHukumRelated(id);
+  const relatedData = relatedResponse?.data ?? [];
   const [view, setView] = useState<ActiveView>("metadata");
 
   if (isLoading) {
@@ -194,7 +199,7 @@ export function ProdukHukumDetail({ id }: { id: number }) {
             )}
           </div>
 
-          <aside className="space-y-5">
+          {/* <aside className="space-y-5">
             <button
               type="button"
               onClick={() => setView("metadata")}
@@ -218,14 +223,6 @@ export function ProdukHukumDetail({ id }: { id: number }) {
               icon={<FileText className="h-4 w-4" />}
             >
               <div className="flex flex-wrap gap-2">
-                {/* <PillButton
-                  active={view === "teks"}
-                  onClick={() => setView("teks")}
-                >
-                  <FileText className="h-3.5 w-3.5" />
-                  Teks
-                </PillButton> */}
-
                 <PillButton
                   active={view === "preview-abstrak"}
                   onClick={() => setView("preview-abstrak")}
@@ -287,7 +284,194 @@ export function ProdukHukumDetail({ id }: { id: number }) {
             <div className="relative h-130 w-full  rounded-xl">
               <Image src="/images/ban.png" alt={"Banner"} fill priority />
             </div>
-          </aside>
+          </aside> */}
+          
+
+<aside className="space-y-5">
+  <button
+    type="button"
+    onClick={() => setView("metadata")}
+    className={`group flex w-full items-center justify-between rounded-xl border px-4 py-3.5 text-left transition-all ${
+      view === "metadata"
+        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+        : "border-border bg-card text-foreground hover:border-primary/30 hover:bg-primary/[0.03]"
+    }`}
+  >
+    <span className="flex items-center gap-2.5">
+      <Info className="h-4 w-4" />
+      <span className="text-sm font-semibold">Metadata</span>
+    </span>
+
+    <ChevronRight className="h-4 w-4" />
+  </button>
+
+  <SidebarSection
+    title="Abstrak"
+    icon={<FileText className="h-4 w-4" />}
+  >
+    <div className="flex flex-wrap gap-2">
+      <PillButton
+        active={view === "preview-abstrak"}
+        onClick={() => setView("preview-abstrak")}
+        disabled={!produk.file_abstrak}
+      >
+        <Eye className="h-3.5 w-3.5" />
+        Preview
+      </PillButton>
+
+      <button
+        type="button"
+        disabled={!produk.file_abstrak}
+        onClick={() => {
+          if (produk.file_abstrak) {
+            handleDownloadAbstrak(produk.file_abstrak);
+          }
+        }}
+        className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
+          produk.file_abstrak
+            ? "bg-secondary text-secondary-foreground hover:bg-border"
+            : "cursor-not-allowed bg-secondary/50 text-muted-foreground/40"
+        }`}
+      >
+        <Download className="h-3.5 w-3.5" />
+        Download
+      </button>
+    </div>
+
+    {!produk.file_abstrak && (
+      <p className="mt-2 text-xs italic text-muted-foreground">
+        File abstrak belum tersedia.
+      </p>
+    )}
+  </SidebarSection>
+
+  <SidebarSection
+    title="File Peraturan"
+    icon={<BookOpen className="h-4 w-4" />}
+  >
+    <div className="flex flex-wrap gap-2">
+      <PillButton
+        active={view === "preview-peraturan"}
+        onClick={() => setView("preview-peraturan")}
+        disabled={!produk.file_dokumen}
+      >
+        <Eye className="h-3.5 w-3.5" />
+        Preview
+      </PillButton>
+
+      <button
+        type="button"
+        disabled={!produk.file_dokumen}
+        onClick={() => {
+          if (produk.file_dokumen) {
+            handleDownloadPeraturan(produk);
+          }
+        }}
+        className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
+          produk.file_dokumen
+            ? "bg-secondary text-secondary-foreground hover:bg-border"
+            : "cursor-not-allowed bg-secondary/50 text-muted-foreground/40"
+        }`}
+      >
+        <Download className="h-3.5 w-3.5" />
+        Download
+      </button>
+    </div>
+
+    {!produk.file_dokumen && (
+      <p className="mt-2 text-xs italic text-muted-foreground">
+        File peraturan belum tersedia.
+      </p>
+    )}
+  </SidebarSection>
+
+  <SidebarSection
+    title="Dokumen Terkait"
+    icon={<BookOpen className="h-4 w-4" />}
+  >
+    <div className="space-y-2.5">
+      {relatedLoading ? (
+        [1, 2, 3].map((item) => (
+          <div
+            key={item}
+            className="animate-pulse rounded-xl border border-border bg-card p-3.5"
+          >
+            <div className="h-4 w-4/5 rounded bg-muted" />
+            <div className="mt-2 h-3 w-3/5 rounded bg-muted" />
+            <div className="mt-3 h-3 w-2/5 rounded bg-muted" />
+          </div>
+        ))
+      ) : relatedData.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-border bg-muted/20 px-4 py-5 text-center">
+          <FileText className="mx-auto h-5 w-5 text-muted-foreground/50" />
+
+          <p className="mt-2 text-xs text-muted-foreground">
+            Belum ada dokumen terkait.
+          </p>
+        </div>
+      ) : (
+        relatedData.map((item :any) => (
+          <Link
+            key={item.id}
+            href={`/dokumen-hukum/${item.id}`}
+            className="group block"
+          >
+            <div className="relative overflow-hidden rounded-xl border border-border bg-card p-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md">
+              <div className="absolute inset-y-0 left-0 w-0.5 bg-primary opacity-0 transition-opacity group-hover:opacity-100" />
+
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                  <FileText className="h-4 w-4" />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <h3 className="line-clamp-2 text-sm font-semibold leading-5 text-foreground transition-colors group-hover:text-primary">
+                    {item.judul}
+                  </h3>
+
+                  <div className="mt-1.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-muted-foreground">
+                    <span>{item.kategori}</span>
+                    <span>•</span>
+                    <span>No. {item.nomor}</span>
+                    <span>•</span>
+                    <span>{item.tahun}</span>
+                  </div>
+
+                  <div className="mt-2.5 flex items-center gap-3">
+                    <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                      <Eye className="h-3 w-3" />
+                      {item.dilihat ?? 0}
+                    </span>
+
+                    <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                      <Download className="h-3 w-3" />
+                      {item.download ?? 0}
+                    </span>
+
+                    {item.status && (
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                          item.status === "Berlaku"
+                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-primary" />
+              </div>
+            </div>
+          </Link>
+        ))
+      )}
+    </div>
+  </SidebarSection>
+</aside>
+
         </div>
       </div>
       <SiteFooter />
@@ -357,9 +541,7 @@ async function handleDownloadAbstrak(file: string) {
     link.remove();
 
     window.URL.revokeObjectURL(blobUrl);
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
 
 async function handleDownloadPeraturan(produk: ProdukHukum) {
@@ -385,9 +567,7 @@ async function handleDownloadPeraturan(produk: ProdukHukum) {
     link.remove();
 
     window.URL.revokeObjectURL(blobUrl);
-  } catch (error) {
-    
-  }
+  } catch (error) {}
 }
 export const formatTanggal = (value?: string | Date | null): string => {
   if (!value) return "-";

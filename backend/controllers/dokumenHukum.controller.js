@@ -330,7 +330,74 @@ const getAllWeb = async (req, res) => {
     }
 };
 
+const getRelated = async (req, res) => {
+    try {
+        const { id } = req.params;
 
+        const data = await dokumenHukumService.findRelated(id);
+
+        return res.status(200).json({
+            success: true,
+            data,
+        });
+    } catch (error) {   
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Gagal mengambil dokumen hukum",
+        });
+    }
+};
+
+
+const controlDownload = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result =
+      await dokumenHukumService.serviceDownload(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Jumlah download berhasil diperbarui",
+      data: result,
+    });
+  } catch (error) {
+    console.error("incrementDownload:", error);
+
+    return res.status(500).json({
+      success: false,
+      message:
+        error.message ||
+        "Gagal memperbarui jumlah download",
+    });
+  }
+};
+
+const controlPreview = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result =
+      await dokumenHukumService.servicePreview(id);
+
+    return res.status(200).json({
+      success: true,
+      message: "Jumlah preview berhasil diperbarui",
+      data: result,
+    });
+  } catch (error) {
+    console.error("incrementPreview:", error);
+
+    return res.status(500).json({
+      success: false,
+      message:
+        error.message ||
+        "Gagal memperbarui jumlah preview",
+    });
+  }
+};
 
 module.exports = {
     getAll,
@@ -342,5 +409,8 @@ module.exports = {
     incrementDownload,
     getSummary,
     getList,
-    getAllWeb
+    getAllWeb,
+    getRelated,
+    controlDownload,
+    controlPreview
 };

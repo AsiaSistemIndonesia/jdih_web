@@ -18,3 +18,9 @@ export const createKontak = async (
   const res = await api.post("/Kontak", data);
   return res.data.data;
 };
+
+export const deleteKontak = async (
+  id: number
+): Promise<void> => {
+  await api.delete(`/kontak/${id}`);
+};

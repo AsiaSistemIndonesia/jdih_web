@@ -373,6 +373,43 @@ const getAllWeb = async ({
     return result;
 };
 
+const findRelated = async (id) => {
+    return await dokumenHukumRepository.findRelated(id);
+};
+
+const serviceDownload = async (dokumenId) => {
+  if (!dokumenId) {
+    throw new Error("ID dokumen tidak ditemukan");
+  }
+
+  const result =
+    await dokumenHukumRepository.dynamisDownload(
+      dokumenId
+    );
+
+  if (!result) {
+    throw new Error("Dokumen hukum tidak ditemukan");
+  }
+
+  return result;
+};
+
+const servicePreview = async (dokumenId) => {
+  if (!dokumenId) {
+    throw new Error("ID dokumen tidak ditemukan");
+  }
+
+  const result =
+    await dokumenHukumRepository.dinamisPreview(
+      dokumenId
+    );
+
+  if (!result) {
+    throw new Error("Dokumen hukum tidak ditemukan");
+  }
+
+  return result;
+};
 module.exports = {
     getAll,
     getById,
@@ -383,5 +420,8 @@ module.exports = {
     incrementDownload,
     getSummary,
     getList,
-    getAllWeb
+    getAllWeb,
+    findRelated,
+    serviceDownload,
+    servicePreview
 };

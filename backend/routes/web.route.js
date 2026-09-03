@@ -23,6 +23,10 @@ router.get("/sumary-dashboard", dokumenHukumController.getSummary);
 router.get("/dokumen-hukum", dokumenHukumController.getList);
 router.get("/dokumen-hukum-pagination", dokumenHukumController.getAllWeb);
 router.get("/dokumen-hukum/:id", dokumenHukumController.getById);
+router.get("/dokumen-hukum/:id/related", dokumenHukumController.getRelated);
+router.post("/dokumen-hukum/:id/download", dokumenHukumController.controlDownload);
+
+router.post("/dokumen-hukum/:id/preview", dokumenHukumController.controlPreview);
 
 // kontak
 router.post("/kontak", Kontakcontroller.create);

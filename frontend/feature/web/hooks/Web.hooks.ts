@@ -4,6 +4,7 @@ import {
   fetchBeritaLain,
   fetchByIdBerita,
   fetchByIdWebDokumenHukum,
+  fetchDokumenHukumLain,
   fetchWebBeritaAll,
   fetchWebBeritaResult,
   fetchWebDokumenHukum,
@@ -74,6 +75,14 @@ export const useWebBeritaRelated = (beritaId?: any) => {
     queryKey: ["berita-lain", beritaId],
     queryFn: () => fetchBeritaLain(beritaId!),
     enabled: !!beritaId,
+  });
+};
+
+export const useWebDokumenHukumRelated = (idDoc?: any) => {
+  return useQuery({
+    queryKey: ["berita-lain", idDoc],
+    queryFn: () => fetchDokumenHukumLain(idDoc!),
+    enabled: !!idDoc,
   });
 };
 

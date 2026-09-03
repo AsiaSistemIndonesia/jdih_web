@@ -80,7 +80,21 @@ const getAllKontak = async ({
   };
 };
 
+const removeById = async (id) => {
+  if (!id) {
+    throw new Error("ID kontak wajib diisi");
+  }
+
+  const kontak = await kontakRepository.removeById(id);
+
+  if (!kontak) {
+    throw new Error("Kontak tidak ditemukan");
+  }
+
+  return kontak;
+};
 module.exports = {
   createKontak,
   getAllKontak,
+  removeById
 };

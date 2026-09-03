@@ -448,12 +448,6 @@ function DokumenHukumContent() {
     );
   };
 
-  /**
-   * ============================================================
-   * TABLE COLUMNS
-   * ============================================================
-   */
-
   const columns: DataTableColumn<DokumenHukum>[] =
     [
       {

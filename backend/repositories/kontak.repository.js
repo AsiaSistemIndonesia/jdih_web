@@ -41,9 +41,6 @@ const findAll = async ({ search = "", page = 1, size = 10 }) => {
     `
     : "";
 
-  // =========================
-  // Query data
-  // =========================
   const dataQuery = `
     SELECT
       kontak_id,
@@ -90,7 +87,20 @@ const findAll = async ({ search = "", page = 1, size = 10 }) => {
   };
 };
 
+const removeById = async (id) => {
+  const query = `
+    DELETE FROM kontak
+    WHERE kontak_id = $1
+    RETURNING *
+  `;
+
+  const result = await pool.query(query, [id]);
+
+  return result.rows[0] || null;
+};
+
 module.exports = {
   create,
   findAll,
+  removeById
 };
