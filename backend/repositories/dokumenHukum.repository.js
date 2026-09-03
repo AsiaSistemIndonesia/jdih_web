@@ -568,13 +568,13 @@ const findRelated = async (id) => {
 const dynamisDownload = async (dokumenId) => {
   const query = `
     UPDATE dokumen_hukum
-    SET download_count = COALESCE(download_count, 0) + 1,
+    SET download = COALESCE(download, 0) + 1,
         updated_at = NOW()
-    WHERE dokumen_id = $1
-    RETURNING dokumen_id, download_count, preview_count
+    WHERE id = $1
+    RETURNING id, download, dilihat
   `;
 
-  const { rows } = await db.query(query, [dokumenId]);
+  const { rows } = await pool.query(query, [dokumenId]);
 
   return rows[0] || null;
 };
@@ -582,13 +582,13 @@ const dynamisDownload = async (dokumenId) => {
 const dinamisPreview = async (dokumenId) => {
   const query = `
     UPDATE dokumen_hukum
-    SET preview_count = COALESCE(preview_count, 0) + 1,
+    SET dilihat = COALESCE(dilihat, 0) + 1,
         updated_at = NOW()
-    WHERE dokumen_id = $1
-    RETURNING dokumen_id, download_count, preview_count
+    WHERE id = $1
+    RETURNING id, download, dilihat
   `;
 
-  const { rows } = await db.query(query, [dokumenId]);
+  const { rows } = await pool.query(query, [dokumenId]);
 
   return rows[0] || null;
 };

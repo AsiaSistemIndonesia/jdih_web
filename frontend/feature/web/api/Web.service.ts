@@ -76,6 +76,16 @@ export const updateViews = async (beritaId: number) => {
   return res.data;
 };
 
+export const updatePriview = async (idDocHuk: number) => {
+  const res = await api.post(`/dokumen-hukum/${idDocHuk}/preview`);
+  return res.data;
+};
+
+export const updateDownload = async (idDocHuk: number) => {
+  const res = await api.post(`/dokumen-hukum/${idDocHuk}/download`);
+  return res.data;
+};
+
 export const fetchWebBeritaResult = async ({
   page = 1,
   size = 10,

@@ -319,8 +319,6 @@ export function ProdukHukumTable() {
 
           <div className="hidden h-8 w-px bg-border lg:block" />
 
-          {/* KATEGORI */}
-
           <div className="lg:w-48">
             <AppSelect
               options={
@@ -333,8 +331,6 @@ export function ProdukHukumTable() {
           </div>
 
           <div className="hidden h-8 w-px bg-border lg:block" />
-
-          {/* TAHUN */}
 
           <div className="lg:w-32">
             <AppSelect
@@ -723,8 +719,6 @@ export function ProdukHukumTable() {
                     </span>
                   </div>
 
-                  {/* DOCUMENT ICON */}
-
                   <div
                     className="
                       flex
@@ -786,9 +780,6 @@ export function ProdukHukumTable() {
                       />
                     </div>
                   </div>
-
-                  {/* CONTENT */}
-
                   <div
                     className="
                       min-w-0
@@ -819,8 +810,6 @@ export function ProdukHukumTable() {
                         - Nomor { " " + p.nomor}
                     </p>
 
-                    {/* JUDUL */}
-
                     <h4
                       className="
                         mt-1.5
@@ -840,8 +829,6 @@ export function ProdukHukumTable() {
                         "Tanpa judul"}
                     </h4>
 
-                    {/* META */}
-
                     <div
                       className="
                         mt-3
@@ -851,9 +838,6 @@ export function ProdukHukumTable() {
                         gap-2
                       "
                     >
-
-                      {/* KATEGORI */}
-
                       {p.kategori && (
                         <span
                           className="
@@ -876,8 +860,6 @@ export function ProdukHukumTable() {
                           {p.kategori}
                         </span>
                       )}
-
-                      {/* STATUS */}
 
                       <span
                         className={`
@@ -1009,10 +991,6 @@ export function ProdukHukumTable() {
         </div>
       </div>
 
-      {/* ======================================================
-          PAGINATION
-      ====================================================== */}
-
       {totalPages > 1 && (
         <div
           className="
@@ -1023,8 +1001,6 @@ export function ProdukHukumTable() {
             pt-2
           "
         >
-
-          {/* PREVIOUS */}
 
           <button
             type="button"
@@ -1055,8 +1031,6 @@ export function ProdukHukumTable() {
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
-
-          {/* NUMBERS */}
 
           {pageNumbers.map(
             (page, index) =>
@@ -1112,8 +1086,6 @@ export function ProdukHukumTable() {
                 </button>
               ),
           )}
-
-          {/* NEXT */}
 
           <button
             type="button"

@@ -17,6 +17,8 @@ import {
   getLogout,
   getSession,
   Login,
+  updateDownload,
+  updatePriview,
   updateViews,
 } from "../api/Web.service";
 import { toast } from "sonner";
@@ -203,5 +205,17 @@ export const LogoutHook = () => {
 export const useUpdateViews = () => {
   return useMutation({
     mutationFn: (beritaId: number) => updateViews(beritaId),
+  });
+};
+
+export const usePriview = () => {
+  return useMutation({
+    mutationFn: (idDocHukum: number) => updatePriview(idDocHukum),
+  });
+};
+
+export const useDownload = () => {
+  return useMutation({
+    mutationFn: (idDocHukumDownload: number) => updateDownload(idDocHukumDownload),
   });
 };
