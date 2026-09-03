@@ -47,8 +47,8 @@
   --popover-foreground: oklch(0.22 0.02 25);
 
   /* Primary: deep maroon */
-  --primary: oklch(0.45 0.25 264);
-  /* --primary:  rgb(13, 59, 115); */
+  /* --primary: oklch(0.45 0.25 264); */
+  --primary:  rgb(13, 59, 115);
   --primary-foreground: oklch(0.98 0 0);
 
   /* Secondary: warm light */
