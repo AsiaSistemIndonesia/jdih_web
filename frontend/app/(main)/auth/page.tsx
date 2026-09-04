@@ -73,29 +73,19 @@ export default function LoginPage() {
     }
 
     setCheckingSession(false);
-  }, [
-    sessionQuery.isLoading,
-    sessionQuery.data,
-    router,
-  ]);
+  }, [sessionQuery.isLoading, sessionQuery.data, router]);
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const rect =
-        containerRef.current?.getBoundingClientRect();
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = containerRef.current?.getBoundingClientRect();
 
-      if (!rect) return;
+    if (!rect) return;
 
-      const x =
-        ((e.clientX - rect.left) / rect.width) * 100;
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
 
-      const y =
-        ((e.clientY - rect.top) / rect.height) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-      setPos({ x, y });
-    },
-    [],
-  );
+    setPos({ x, y });
+  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -105,18 +95,15 @@ export default function LoginPage() {
     if (!cleanEmail) {
       newErrors.email = "Email wajib diisi";
     } else {
-      const emailRegex =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailRegex.test(cleanEmail)) {
-        newErrors.email =
-          "Format email tidak valid";
+        newErrors.email = "Format email tidak valid";
       }
     }
 
     if (!password) {
-      newErrors.password =
-        "Password wajib diisi";
+      newErrors.password = "Password wajib diisi";
     }
 
     setErrors(newErrors);
@@ -124,15 +111,10 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>,
-  ) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (
-      loginMutation.isPending ||
-      status === "success"
-    ) {
+    if (loginMutation.isPending || status === "success") {
       return;
     }
 
@@ -183,27 +165,18 @@ export default function LoginPage() {
       }
 
       setErrors({
-        general:
-          "Terjadi kesalahan pada server. Silakan coba lagi.",
+        general: "Terjadi kesalahan pada server. Silakan coba lagi.",
       });
     }
   };
 
-  if (
-    checkingSession ||
-    sessionQuery.isLoading
-  ) {
+  if (checkingSession || sessionQuery.isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
         <div className="flex flex-col items-center gap-3">
-          <Loader2
-            size={28}
-            className="animate-spin text-[#1358A8]"
-          />
+          <Loader2 size={28} className="animate-spin text-[#1358A8]" />
 
-          <p className="text-sm text-gray-500">
-            Memeriksa sesi pengguna...
-          </p>
+          <p className="text-sm text-gray-500">Memeriksa sesi pengguna...</p>
         </div>
       </div>
     );
@@ -217,15 +190,8 @@ export default function LoginPage() {
   const BORDER = "#E5E7EB";
   const ERROR = "#DC2626";
 
-  const fieldWrap = (
-    focused: boolean,
-    hasError: boolean,
-  ): CSSProperties => ({
-    borderColor: hasError
-      ? ERROR
-      : focused
-        ? BLUE
-        : BORDER,
+  const fieldWrap = (focused: boolean, hasError: boolean): CSSProperties => ({
+    borderColor: hasError ? ERROR : focused ? BLUE : BORDER,
 
     boxShadow: hasError
       ? "0 0 0 4px rgba(220,38,38,0.08)"
@@ -390,7 +356,6 @@ export default function LoginPage() {
 
       <div className="relative z-10 w-full max-w-6xl">
         <div className="grid items-center gap-16 lg:grid-cols-[1fr_430px]">
-
           <div className="hidden lg:block">
             <div
               className="jdih-in"
@@ -403,15 +368,10 @@ export default function LoginPage() {
                   className="flex h-14 w-14 items-center justify-center rounded-2xl"
                   style={{
                     background: BLUE,
-                    boxShadow:
-                      "0 12px 30px rgba(19,88,168,0.18)",
+                    boxShadow: "0 12px 30px rgba(19,88,168,0.18)",
                   }}
                 >
-                  <Scale
-                    size={28}
-                    color="white"
-                    strokeWidth={1.8}
-                  />
+                  <Scale size={28} color="white" strokeWidth={1.8} />
                 </div>
 
                 <div>
@@ -443,10 +403,7 @@ export default function LoginPage() {
               >
                 Pusat Dokumentasi
                 <br />
-
-                <span style={{ color: BLUE }}>
-                  Informasi Hukum
-                </span>
+                <span style={{ color: BLUE }}>Informasi Hukum</span>
               </h2>
 
               <p
@@ -455,152 +412,152 @@ export default function LoginPage() {
                   color: MUTED,
                 }}
               >
-                Akses dan kelola dokumentasi serta informasi
-                hukum secara terintegrasi melalui Portal JDIH.
-                Temukan produk hukum, peraturan, keputusan,
-                dan berbagai dokumen hukum dalam satu sistem.
+                Akses dan kelola dokumentasi serta informasi hukum secara
+                terintegrasi melalui Portal JDIH. Temukan produk hukum,
+                peraturan, keputusan, dan berbagai dokumen hukum dalam satu
+                sistem.
               </p>
 
               <div className="relative mt-10 h-[300px] w-full max-w-[590px]">
-  <div
-    className="absolute left-1/2 top-1/2 h-[270px] w-[270px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-    style={{
-      background:
-        "radial-gradient(circle, rgba(234,242,255,0.95), rgba(234,242,255,0.35) 55%, transparent 72%)",
-    }}
-  />
+                <div
+                  className="absolute left-1/2 top-1/2 h-[270px] w-[270px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(234,242,255,0.95), rgba(234,242,255,0.35) 55%, transparent 72%)",
+                  }}
+                />
 
-  <div
-    className="absolute left-[18%] top-[12%] h-3 w-3 rounded-full"
-    style={{
-      background: GOLD,
-      opacity: 0.65,
-    }}
-  />
+                <div
+                  className="absolute left-[18%] top-[12%] h-3 w-3 rounded-full"
+                  style={{
+                    background: GOLD,
+                    opacity: 0.65,
+                  }}
+                />
 
-  <div
-    className="absolute right-[17%] top-[23%] h-2 w-2 rounded-full"
-    style={{
-      background: BLUE,
-      opacity: 0.45,
-    }}
-  />
+                <div
+                  className="absolute right-[17%] top-[23%] h-2 w-2 rounded-full"
+                  style={{
+                    background: BLUE,
+                    opacity: 0.45,
+                  }}
+                />
 
-  <div
-    className="absolute bottom-[18%] left-[27%] h-2 w-2 rounded-full"
-    style={{
-      background: GOLD,
-      opacity: 0.5,
-    }}
-  />
+                <div
+                  className="absolute bottom-[18%] left-[27%] h-2 w-2 rounded-full"
+                  style={{
+                    background: GOLD,
+                    opacity: 0.5,
+                  }}
+                />
 
-  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-    <div className="jdih-float">
-      <div className="jdih-archive relative h-[230px] w-[330px]">
-        <div className="jdih-archive-glow absolute left-1/2 top-1/2 h-[210px] w-[210px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <div className="jdih-float">
+                    <div className="jdih-archive relative h-[230px] w-[330px]">
+                      <div className="jdih-archive-glow absolute left-1/2 top-1/2 h-[210px] w-[210px] -translate-x-1/2 -translate-y-1/2 rounded-full" />
 
-        <div className="jdih-orbit-line absolute left-1/2 top-1/2 h-[190px] w-[270px] -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-[#1358A8]/10" />
+                      <div className="jdih-orbit-line absolute left-1/2 top-1/2 h-[190px] w-[270px] -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-[#1358A8]/10" />
 
-        <div className="jdih-dot absolute left-[25px] top-[72px] h-2 w-2 rounded-full bg-[#C9A15A]" />
+                      <div className="jdih-dot absolute left-[25px] top-[72px] h-2 w-2 rounded-full bg-[#C9A15A]" />
 
-        <div className="jdih-dot jdih-dot-delay absolute right-[28px] top-[45px] h-1.5 w-1.5 rounded-full bg-[#1358A8]" />
+                      <div className="jdih-dot jdih-dot-delay absolute right-[28px] top-[45px] h-1.5 w-1.5 rounded-full bg-[#1358A8]" />
 
-        <div className="jdih-dot absolute bottom-[48px] left-[54px] h-1.5 w-1.5 rounded-full bg-[#1358A8]" />
+                      <div className="jdih-dot absolute bottom-[48px] left-[54px] h-1.5 w-1.5 rounded-full bg-[#1358A8]" />
 
-        <div className="jdih-dot jdih-dot-delay absolute bottom-[38px] right-[62px] h-2 w-2 rounded-full bg-[#C9A15A]" />
+                      <div className="jdih-dot jdih-dot-delay absolute bottom-[38px] right-[62px] h-2 w-2 rounded-full bg-[#C9A15A]" />
 
-        <div className="jdih-document-main absolute left-1/2 top-[22px] h-[150px] w-[116px] -translate-x-1/2">
-          <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-[10px] border border-[#DCE5F0] bg-[#F4F7FB]" />
+                      <div className="jdih-document-main absolute left-1/2 top-[22px] h-[150px] w-[116px] -translate-x-1/2">
+                        <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-[10px] border border-[#DCE5F0] bg-[#F4F7FB]" />
 
-          <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-[10px] border border-[#D5E0EC] bg-white" />
+                        <div className="absolute inset-0 translate-x-1 translate-y-1 rounded-[10px] border border-[#D5E0EC] bg-white" />
 
-          <div className="relative h-full rounded-[10px] border border-[#D8E1EC] bg-white shadow-[0_18px_40px_rgba(15,23,42,0.10)]">
-            <div className="absolute left-1/2 top-[17px] flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-[#D8E4F2] bg-[#F4F8FD]">
-              <div className="relative h-6 w-6">
-                <div className="absolute left-1/2 top-0 h-5 w-[3px] -translate-x-1/2 rounded-full bg-[#1358A8]" />
+                        <div className="relative h-full rounded-[10px] border border-[#D8E1EC] bg-white shadow-[0_18px_40px_rgba(15,23,42,0.10)]">
+                          <div className="absolute left-1/2 top-[17px] flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-[#D8E4F2] bg-[#F4F8FD]">
+                            <div className="relative h-6 w-6">
+                              <div className="absolute left-1/2 top-0 h-5 w-[3px] -translate-x-1/2 rounded-full bg-[#1358A8]" />
 
-                <div className="absolute left-[2px] top-[6px] h-[3px] w-5 rounded-full bg-[#1358A8]" />
+                              <div className="absolute left-[2px] top-[6px] h-[3px] w-5 rounded-full bg-[#1358A8]" />
 
-                <div className="absolute left-[3px] top-[8px] h-3 w-[5px] rounded-b-full border-b-2 border-l-2 border-r-2 border-[#1358A8]" />
+                              <div className="absolute left-[3px] top-[8px] h-3 w-[5px] rounded-b-full border-b-2 border-l-2 border-r-2 border-[#1358A8]" />
 
-                <div className="absolute right-[3px] top-[8px] h-3 w-[5px] rounded-b-full border-b-2 border-l-2 border-r-2 border-[#1358A8]" />
+                              <div className="absolute right-[3px] top-[8px] h-3 w-[5px] rounded-b-full border-b-2 border-l-2 border-r-2 border-[#1358A8]" />
 
-                <div className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[#C9A15A]" />
+                              <div className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[#C9A15A]" />
+                            </div>
+                          </div>
+
+                          <div className="absolute left-[16px] right-[16px] top-[72px]">
+                            <div className="mb-2 h-1.5 w-[52px] rounded-full bg-[#1358A8]" />
+
+                            <div className="mb-2 h-1 w-full rounded-full bg-[#E5EAF1]" />
+
+                            <div className="mb-2 h-1 w-[82%] rounded-full bg-[#E5EAF1]" />
+
+                            <div className="h-1 w-[65%] rounded-full bg-[#E5EAF1]" />
+                          </div>
+
+                          <div className="absolute bottom-[14px] left-[16px] flex items-center gap-1.5">
+                            <div className="h-1.5 w-1.5 rounded-full bg-[#C9A15A]" />
+                            <div className="h-1 w-[35px] rounded-full bg-[#E5EAF1]" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="jdih-document-left absolute left-[27px] top-[92px] h-[94px] w-[74px] rotate-[-8deg]">
+                        <div className="relative h-full rounded-lg border border-[#DCE4EE] bg-white shadow-[0_12px_25px_rgba(15,23,42,0.08)]">
+                          <div className="absolute left-[11px] top-[13px] h-1.5 w-[31px] rounded-full bg-[#C9A15A]" />
+
+                          <div className="absolute left-[11px] top-[27px] h-1 w-[48px] rounded-full bg-[#E5EAF1]" />
+
+                          <div className="absolute left-[11px] top-[36px] h-1 w-[42px] rounded-full bg-[#E5EAF1]" />
+
+                          <div className="absolute left-[11px] top-[45px] h-1 w-[34px] rounded-full bg-[#E5EAF1]" />
+
+                          <div className="absolute bottom-[12px] left-[11px] h-4 w-4 rounded-md bg-[#F0F5FB]">
+                            <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1358A8]" />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="jdih-document-right absolute right-[25px] top-[105px] h-[82px] w-[68px] rotate-[8deg]">
+                        <div className="relative h-full rounded-lg border border-[#DCE4EE] bg-white shadow-[0_12px_25px_rgba(15,23,42,0.08)]">
+                          <div className="absolute left-[10px] top-[12px] h-1.5 w-[27px] rounded-full bg-[#1358A8]" />
+
+                          <div className="absolute left-[10px] top-[26px] h-1 w-[45px] rounded-full bg-[#E5EAF1]" />
+
+                          <div className="absolute left-[10px] top-[35px] h-1 w-[39px] rounded-full bg-[#E5EAF1]" />
+
+                          <div className="absolute left-[10px] top-[44px] h-1 w-[29px] rounded-full bg-[#E5EAF1]" />
+
+                          <div className="absolute bottom-[10px] right-[10px] h-2 w-2 rounded-full bg-[#C9A15A]" />
+                        </div>
+                      </div>
+
+                      <div className="jdih-search absolute bottom-[25px] right-[76px] h-[58px] w-[58px]">
+                        <div className="absolute left-0 top-0 h-[38px] w-[38px] rounded-full border-[5px] border-[#1358A8] bg-white shadow-[0_8px_20px_rgba(19,88,168,0.14)]">
+                          <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C9A15A]" />
+                        </div>
+
+                        <div className="absolute left-[31px] top-[31px] h-[24px] w-[6px] rotate-[-45deg] rounded-full bg-[#1358A8]" />
+                      </div>
+
+                      <div className="absolute bottom-[8px] left-1/2 flex -translate-x-1/2 items-center gap-2">
+                        <div className="h-[4px] w-8 rounded-full bg-[#C9A15A]" />
+                        <div className="h-[4px] w-16 rounded-full bg-[#1358A8]" />
+                        <div className="h-[4px] w-8 rounded-full bg-[#C9A15A]" />
+                      </div>
+
+                      <div className="absolute left-[76px] top-[28px] text-[13px] text-[#C9A15A]">
+                        ✦
+                      </div>
+
+                      <div className="jdih-star absolute right-[76px] top-[71px] text-[10px] text-[#1358A8]">
+                        ✦
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-
-            <div className="absolute left-[16px] right-[16px] top-[72px]">
-              <div className="mb-2 h-1.5 w-[52px] rounded-full bg-[#1358A8]" />
-
-              <div className="mb-2 h-1 w-full rounded-full bg-[#E5EAF1]" />
-
-              <div className="mb-2 h-1 w-[82%] rounded-full bg-[#E5EAF1]" />
-
-              <div className="h-1 w-[65%] rounded-full bg-[#E5EAF1]" />
-            </div>
-
-            <div className="absolute bottom-[14px] left-[16px] flex items-center gap-1.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-[#C9A15A]" />
-              <div className="h-1 w-[35px] rounded-full bg-[#E5EAF1]" />
-            </div>
-          </div>
-        </div>
-
-        <div className="jdih-document-left absolute left-[27px] top-[92px] h-[94px] w-[74px] rotate-[-8deg]">
-          <div className="relative h-full rounded-lg border border-[#DCE4EE] bg-white shadow-[0_12px_25px_rgba(15,23,42,0.08)]">
-            <div className="absolute left-[11px] top-[13px] h-1.5 w-[31px] rounded-full bg-[#C9A15A]" />
-
-            <div className="absolute left-[11px] top-[27px] h-1 w-[48px] rounded-full bg-[#E5EAF1]" />
-
-            <div className="absolute left-[11px] top-[36px] h-1 w-[42px] rounded-full bg-[#E5EAF1]" />
-
-            <div className="absolute left-[11px] top-[45px] h-1 w-[34px] rounded-full bg-[#E5EAF1]" />
-
-            <div className="absolute bottom-[12px] left-[11px] h-4 w-4 rounded-md bg-[#F0F5FB]">
-              <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#1358A8]" />
-            </div>
-          </div>
-        </div>
-
-        <div className="jdih-document-right absolute right-[25px] top-[105px] h-[82px] w-[68px] rotate-[8deg]">
-          <div className="relative h-full rounded-lg border border-[#DCE4EE] bg-white shadow-[0_12px_25px_rgba(15,23,42,0.08)]">
-            <div className="absolute left-[10px] top-[12px] h-1.5 w-[27px] rounded-full bg-[#1358A8]" />
-
-            <div className="absolute left-[10px] top-[26px] h-1 w-[45px] rounded-full bg-[#E5EAF1]" />
-
-            <div className="absolute left-[10px] top-[35px] h-1 w-[39px] rounded-full bg-[#E5EAF1]" />
-
-            <div className="absolute left-[10px] top-[44px] h-1 w-[29px] rounded-full bg-[#E5EAF1]" />
-
-            <div className="absolute bottom-[10px] right-[10px] h-2 w-2 rounded-full bg-[#C9A15A]" />
-          </div>
-        </div>
-
-        <div className="jdih-search absolute bottom-[25px] right-[76px] h-[58px] w-[58px]">
-          <div className="absolute left-0 top-0 h-[38px] w-[38px] rounded-full border-[5px] border-[#1358A8] bg-white shadow-[0_8px_20px_rgba(19,88,168,0.14)]">
-            <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#C9A15A]" />
-          </div>
-
-          <div className="absolute left-[31px] top-[31px] h-[24px] w-[6px] rotate-[-45deg] rounded-full bg-[#1358A8]" />
-        </div>
-
-        <div className="absolute bottom-[8px] left-1/2 flex -translate-x-1/2 items-center gap-2">
-          <div className="h-[4px] w-8 rounded-full bg-[#C9A15A]" />
-          <div className="h-[4px] w-16 rounded-full bg-[#1358A8]" />
-          <div className="h-[4px] w-8 rounded-full bg-[#C9A15A]" />
-        </div>
-
-        <div className="absolute left-[76px] top-[28px] text-[13px] text-[#C9A15A]">
-          ✦
-        </div>
-
-        <div className="jdih-star absolute right-[76px] top-[71px] text-[10px] text-[#1358A8]">
-          ✦
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
               <div className="mt-2 flex items-center gap-3">
                 <div
@@ -635,15 +592,10 @@ export default function LoginPage() {
                   className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
                   style={{
                     background: BLUE,
-                    boxShadow:
-                      "0 10px 28px rgba(19,88,168,0.2)",
+                    boxShadow: "0 10px 28px rgba(19,88,168,0.2)",
                   }}
                 >
-                  <Scale
-                    size={27}
-                    color="white"
-                    strokeWidth={1.8}
-                  />
+                  <Scale size={27} color="white" strokeWidth={1.8} />
                 </div>
 
                 <div
@@ -690,8 +642,7 @@ export default function LoginPage() {
                     color: MUTED,
                   }}
                 >
-                  Masuk untuk mengakses layanan dan
-                  dokumentasi informasi hukum.
+                  Masuk untuk mengakses layanan dan dokumentasi informasi hukum.
                 </p>
               </div>
 
@@ -725,7 +676,6 @@ export default function LoginPage() {
               )}
 
               <form onSubmit={handleSubmit} noValidate>
-
                 <div
                   className="jdih-in mb-5"
                   style={{
@@ -744,21 +694,14 @@ export default function LoginPage() {
                   <div
                     className="flex h-[52px] items-center gap-3 rounded-xl border px-4 transition-all duration-200"
                     style={{
-                      ...fieldWrap(
-                        emailFocused,
-                        !!errors.email,
-                      ),
+                      ...fieldWrap(emailFocused, !!errors.email),
                     }}
                   >
                     <Mail
                       size={17}
                       strokeWidth={1.8}
                       color={
-                        errors.email
-                          ? ERROR
-                          : emailFocused
-                            ? BLUE
-                            : "#9CA3AF"
+                        errors.email ? ERROR : emailFocused ? BLUE : "#9CA3AF"
                       }
                     />
 
@@ -783,12 +726,8 @@ export default function LoginPage() {
                           }));
                         }
                       }}
-                      onFocus={() =>
-                        setEmailFocused(true)
-                      }
-                      onBlur={() =>
-                        setEmailFocused(false)
-                      }
+                      onFocus={() => setEmailFocused(true)}
+                      onBlur={() => setEmailFocused(false)}
                       placeholder="Masukkan alamat email"
                       autoComplete="email"
                       disabled={loginMutation.isPending}
@@ -825,10 +764,7 @@ export default function LoginPage() {
                   <div
                     className="flex h-[52px] items-center gap-3 rounded-xl border px-4 transition-all duration-200"
                     style={{
-                      ...fieldWrap(
-                        passwordFocused,
-                        !!errors.password,
-                      ),
+                      ...fieldWrap(passwordFocused, !!errors.password),
                     }}
                   >
                     <Lock
@@ -844,11 +780,7 @@ export default function LoginPage() {
                     />
 
                     <input
-                      type={
-                        showPassword
-                          ? "text"
-                          : "password"
-                      }
+                      type={showPassword ? "text" : "password"}
                       className="jdih-input"
                       value={password}
                       onChange={(e) => {
@@ -868,12 +800,8 @@ export default function LoginPage() {
                           }));
                         }
                       }}
-                      onFocus={() =>
-                        setPasswordFocused(true)
-                      }
-                      onBlur={() =>
-                        setPasswordFocused(false)
-                      }
+                      onFocus={() => setPasswordFocused(true)}
+                      onBlur={() => setPasswordFocused(false)}
                       placeholder="Masukkan kata sandi"
                       autoComplete="current-password"
                       disabled={loginMutation.isPending}
@@ -882,21 +810,13 @@ export default function LoginPage() {
                     <button
                       type="button"
                       disabled={loginMutation.isPending}
-                      onClick={() =>
-                        setShowPassword((s) => !s)
-                      }
+                      onClick={() => setShowPassword((s) => !s)}
                       className="shrink-0 border-0 bg-transparent p-1"
                     >
                       {showPassword ? (
-                        <EyeOff
-                          size={17}
-                          color="#9CA3AF"
-                        />
+                        <EyeOff size={17} color="#9CA3AF" />
                       ) : (
-                        <Eye
-                          size={17}
-                          color="#9CA3AF"
-                        />
+                        <Eye size={17} color="#9CA3AF" />
                       )}
                     </button>
                   </div>
@@ -915,10 +835,7 @@ export default function LoginPage() {
 
                 <button
                   type="submit"
-                  disabled={
-                    loginMutation.isPending ||
-                    status === "success"
-                  }
+                  disabled={loginMutation.isPending || status === "success"}
                   className="jdih-sans group jdih-in relative flex h-[52px] w-full items-center justify-center gap-2 overflow-hidden rounded-xl border-0 text-sm font-semibold text-white transition-all duration-300"
                   style={{
                     background:
@@ -936,8 +853,7 @@ export default function LoginPage() {
                         : "none",
 
                     cursor:
-                      loginMutation.isPending ||
-                      status === "success"
+                      loginMutation.isPending || status === "success"
                         ? "default"
                         : "pointer",
 
@@ -947,7 +863,6 @@ export default function LoginPage() {
                   {status === "idle" && (
                     <>
                       Masuk ke Portal
-
                       <ArrowRight
                         size={16}
                         className="transition-transform duration-300 group-hover:translate-x-1"
@@ -957,11 +872,7 @@ export default function LoginPage() {
 
                   {status === "loading" && (
                     <>
-                      <Loader2
-                        size={18}
-                        className="animate-spin"
-                      />
-
+                      <Loader2 size={18} className="animate-spin" />
                       Memproses...
                     </>
                   )}
@@ -970,15 +881,10 @@ export default function LoginPage() {
                     <span
                       className="flex items-center gap-2"
                       style={{
-                        animation:
-                          "jdih-pop 0.4s ease",
+                        animation: "jdih-pop 0.4s ease",
                       }}
                     >
-                      <Check
-                        size={17}
-                        strokeWidth={3}
-                      />
-
+                      <Check size={17} strokeWidth={3} />
                       Berhasil
                     </span>
                   )}
@@ -998,9 +904,8 @@ export default function LoginPage() {
                     color: "#9CA3AF",
                   }}
                 >
-                  Akses terbatas untuk pengguna
-                  yang telah terdaftar pada
-                  sistem JDIH.
+                  Akses terbatas untuk pengguna yang telah terdaftar pada sistem
+                  JDIH.
                 </p>
 
                 <div className="mt-4 flex items-center justify-center gap-2">

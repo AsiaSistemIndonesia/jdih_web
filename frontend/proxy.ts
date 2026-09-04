@@ -198,59 +198,160 @@ export function proxy(request: NextRequest) {
    * ============================================
    */
   if (
-    pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
+    pathname.startsWith("/_next") ||
     pathname === "/favicon.ico" ||
-    /\.(png|jpg|jpeg|gif|svg|ico|webp)$/i.test(pathname)
+    /\.(png|jpg|jpeg|gif|svg|ico|webp|css|js|map|woff|woff2|ttf)$/i.test(
+      pathname,
+    )
   ) {
     return NextResponse.next();
   }
 
-  if (process.env.NODE_ENV === "production") {
-    const queryToken = searchParams.get("access_token");
-    const websiteCookie = request.cookies.get("jdih_access")?.value;
+  /**
+   * ============================================
+   * 2. LOGIN / ADMIN AUTHENTICATION
+   * ============================================
+   */
 
-    /**
-     * Jika URL memiliki access_token yang benar,
-     * simpan cookie kemudian redirect ke URL bersih.
-     */
-    if (
-      queryToken &&
-      queryToken === process.env.WEBSITE_ACCESS_TOKEN
-    ) {
-      const url = request.nextUrl.clone();
+  const isLoginPage = pathname === "/auth";
+  const isAdminPage = pathname === "/admin" || pathname.startsWith("/admin/");
 
-      url.searchParams.delete("access_token");
+  /**
+   * Token login ADMIN
+   *
+   * Pastikan login menyimpan token dengan nama:
+   *
+   * access_token
+   */
+  const accessToken =
+    request.cookies.get("access_token")?.value;
 
-      const response = NextResponse.redirect(url);
+  /**
+   * ============================================
+   * 3. SUDAH LOGIN
+   * ============================================
+   *
+   * Kalau user sudah login dan membuka /auth,
+   * jangan tampilkan login lagi.
+   *
+   * Langsung masuk dashboard.
+   */
+  if (isLoginPage && accessToken) {
+    return NextResponse.redirect(
+      new URL("/admin/dashboard", request.url),
+    );
+  }
 
-      response.cookies.set("jdih_access", "granted", {
-        path: "/",
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax",
-        maxAge: 60 * 60 * 24 * 7,
-      });
+  /**
+   * ============================================
+   * 4. ADMIN BELUM LOGIN
+   * ============================================
+   *
+   * Semua /admin harus memiliki access_token.
+   */
+  if (isAdminPage && !accessToken) {
+    return NextResponse.redirect(
+      new URL("/auth", request.url),
+    );
+  }
 
-      return response;
-    }
+  /**
+   * ============================================
+   * 5. WEBSITE ACCESS
+   * ============================================
+   *
+   * jdih_access digunakan untuk membatasi
+   * website production.
+   *
+   * TIDAK digunakan untuk /auth dan /admin.
+   */
+  const queryToken =
+    searchParams.get("access_token");
 
-    /**
-     * Jika belum punya akses website,
-     * blokir halaman publik.
-     *
-     * TAPI /auth tetap harus bisa dibuka
-     * supaya user bisa login.
-     */
-    if (pathname !== "/auth" && websiteCookie !== "granted") {
-      return new NextResponse(
-        `<!DOCTYPE html>
+  const websiteCookie =
+    request.cookies.get("jdih_access")?.value;
+
+  /**
+   * Jika URL mempunyai access_token website
+   * yang valid, simpan cookie.
+   *
+   * Contoh:
+   *
+   * https://jdih.asiasistem.com/?access_token=XXXX
+   */
+  if (
+    queryToken &&
+    queryToken === process.env.WEBSITE_ACCESS_TOKEN
+  ) {
+    const url = request.nextUrl.clone();
+
+    url.searchParams.delete("access_token");
+
+    const response = NextResponse.redirect(url);
+
+    response.cookies.set("jdih_access", "granted", {
+      path: "/",
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    return response;
+  }
+
+  /**
+   * ============================================
+   * 6. /AUTH SELALU BOLEH DIAKSES
+   * ============================================
+   *
+   * Jangan terkena jdih_access.
+   */
+  if (isLoginPage) {
+    return NextResponse.next();
+  }
+
+  /**
+   * ============================================
+   * 7. ADMIN SELALU BOLEH LANJUT
+   * JIKA SUDAH LOGIN
+   * ============================================
+   */
+  if (isAdminPage && accessToken) {
+    const response = NextResponse.next();
+
+    response.headers.set(
+      "X-Frame-Options",
+      "DENY",
+    );
+
+    response.headers.set(
+      "X-Robots-Tag",
+      "noindex, nofollow",
+    );
+
+    return response;
+  }
+
+  /**
+   * ============================================
+   * 8. WEBSITE PUBLIC
+   * ============================================
+   *
+   * Halaman selain /auth dan /admin membutuhkan
+   * jdih_access.
+   */
+  if (websiteCookie !== "granted") {
+    return new NextResponse(
+      `<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Akses Ditolak - JDIH</title>
   <meta name="robots" content="noindex, nofollow">
+
   <style>
     body {
       font-family: Inter, system-ui, sans-serif;
@@ -294,54 +395,32 @@ export function proxy(request: NextRequest) {
   </div>
 </body>
 </html>`,
-        {
-          status: 403,
-          headers: {
-            "Content-Type": "text/html; charset=utf-8",
-            "X-Robots-Tag": "noindex, nofollow",
-          },
-        }
-      );
-    }
-  }
-
-  /**
-   * ============================================
-   * 3. ADMIN AUTHENTICATION
-   * ============================================
-   */
-
-  const isAdminPage = pathname.startsWith("/admin");
-  const isLoginPage = pathname === "/auth";
-
-  const accessToken =
-    request.cookies.get("access_token")?.value;
-
-  /**
-   * Belum login → admin tidak boleh diakses.
-   */
-  if (isAdminPage && !accessToken) {
-    return NextResponse.redirect(
-      new URL("/auth", request.url)
+      {
+        status: 403,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "X-Robots-Tag": "noindex, nofollow",
+        },
+      },
     );
   }
 
   /**
-   * Sudah login → jangan kembali ke auth.
+   * ============================================
+   * 9. REQUEST NORMAL
+   * ============================================
    */
-  if (isLoginPage && accessToken) {
-    return NextResponse.redirect(
-      new URL("/admin/dashboard", request.url)
-    );
-  }
 
   const response = NextResponse.next();
 
-  response.headers.set("X-Frame-Options", "DENY");
+  response.headers.set(
+    "X-Frame-Options",
+    "DENY",
+  );
 
   response.headers.set(
     "X-Robots-Tag",
-    "noindex, nofollow"
+    "noindex, nofollow",
   );
 
   return response;
