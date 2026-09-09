@@ -208,11 +208,10 @@ export function ProdukHukumDetail({ id }: { id: number }) {
             <button
               type="button"
               onClick={() => setView("metadata")}
-              className={`group flex w-full items-center justify-between rounded-xl border px-4 py-3.5 text-left transition-all ${
-                view === "metadata"
-                  ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                  : "border-border bg-card text-foreground hover:border-primary/30 hover:bg-primary/[0.03]"
-              }`}
+              className={`group flex w-full items-center justify-between rounded-xl border px-4 py-3.5 text-left transition-all ${view === "metadata"
+                ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                : "border-border bg-card text-foreground hover:border-primary/30 hover:bg-primary/[0.03]"
+                }`}
             >
               <span className="flex items-center gap-2.5">
                 <Info className="h-4 w-4" />
@@ -222,45 +221,46 @@ export function ProdukHukumDetail({ id }: { id: number }) {
               <ChevronRight className="h-4 w-4" />
             </button>
 
-            <SidebarSection
-              title="Abstrak"
-              icon={<FileText className="h-4 w-4" />}
-            >
-              <div className="flex flex-wrap gap-2">
-                <PillButton
-                  active={view === "preview-abstrak"}
-                  onClick={() => setView("preview-abstrak")}
-                  disabled={!produk.file_abstrak}
-                >
-                  <Eye className="h-3.5 w-3.5" />
-                  Preview
-                </PillButton>
+            {produk.file_abstrak && (
+              <SidebarSection
+                title="Abstrak"
+                icon={<FileText className="h-4 w-4" />}
+              >
+                <div className="flex flex-wrap gap-2">
+                  <PillButton
+                    active={view === "preview-abstrak"}
+                    onClick={() => setView("preview-abstrak")}
+                    disabled={!produk.file_abstrak}
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                    Preview
+                  </PillButton>
 
-                <button
-                  type="button"
-                  disabled={!produk.file_abstrak}
-                  onClick={() => {
-                    if (produk.file_abstrak) {
-                      handleDownloadAbstrak(produk.file_abstrak);
-                    }
-                  }}
-                  className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    produk.file_abstrak
+                  <button
+                    type="button"
+                    disabled={!produk.file_abstrak}
+                    onClick={() => {
+                      if (produk.file_abstrak) {
+                        handleDownloadAbstrak(produk.file_abstrak);
+                      }
+                    }}
+                    className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${produk.file_abstrak
                       ? "bg-secondary text-secondary-foreground hover:bg-border"
                       : "cursor-not-allowed bg-secondary/50 text-muted-foreground/40"
-                  }`}
-                >
-                  <Download className="h-3.5 w-3.5" />
-                  Download
-                </button>
-              </div>
+                      }`}
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    Download
+                  </button>
+                </div>
 
-              {!produk.file_abstrak && (
-                <p className="mt-2 text-xs italic text-muted-foreground">
-                  File abstrak belum tersedia.
-                </p>
-              )}
-            </SidebarSection>
+                {!produk.file_abstrak && (
+                  <p className="mt-2 text-xs italic text-muted-foreground">
+                    File abstrak belum tersedia.
+                  </p>
+                )}
+              </SidebarSection>
+            )}
 
             <SidebarSection
               title="File Lampiran"
@@ -291,11 +291,10 @@ export function ProdukHukumDetail({ id }: { id: number }) {
 
                     handleDownloadPeraturan(produk);
                   }}
-                  className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
-                    produk.file_dokumen && !isDownloadPending
-                      ? "bg-secondary text-secondary-foreground hover:bg-border"
-                      : "cursor-not-allowed bg-secondary/50 text-muted-foreground/40"
-                  }`}
+                  className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${produk.file_dokumen && !isDownloadPending
+                    ? "bg-secondary text-secondary-foreground hover:bg-border"
+                    : "cursor-not-allowed bg-secondary/50 text-muted-foreground/40"
+                    }`}
                 >
                   <Download className="h-3.5 w-3.5" />
 
@@ -372,11 +371,10 @@ export function ProdukHukumDetail({ id }: { id: number }) {
 
                               {item.status && (
                                 <span
-                                  className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                                    item.status === "Berlaku"
-                                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
-                                      : "bg-muted text-muted-foreground"
-                                  }`}
+                                  className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${item.status === "Berlaku"
+                                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
+                                    : "bg-muted text-muted-foreground"
+                                    }`}
                                 >
                                   {item.status}
                                 </span>
@@ -462,7 +460,7 @@ async function handleDownloadAbstrak(file: string) {
     link.remove();
 
     window.URL.revokeObjectURL(blobUrl);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 async function handleDownloadPeraturan(produk: ProdukHukum) {
@@ -488,7 +486,7 @@ async function handleDownloadPeraturan(produk: ProdukHukum) {
     link.remove();
 
     window.URL.revokeObjectURL(blobUrl);
-  } catch (error) {}
+  } catch (error) { }
 }
 export const formatTanggal = (value?: string | Date | null): string => {
   if (!value) return "-";
@@ -507,11 +505,11 @@ export const formatTanggal = (value?: string | Date | null): string => {
 };
 
 function MetadataView({ produk }: { produk: ProdukHukum }) {
-  const rows: [string, string | number | undefined][] = [
-    ["Tipe Dokumen", produk.tipe_dokumen],
+  const rows: [string, string | number | undefined | null][] = [
     ["Judul", produk.judul],
     ["Nomor", produk.nomor],
     ["Tahun", produk.tahun],
+    ["Tipe Dokumen", produk.tipe_dokumen],
     ["Tempat Penetapan", produk.tempat_penetapan],
     ["Tanggal Penetapan", formatTanggal(produk.tanggal_penetapan)],
     ["Tanggal Pengundangan", formatTanggal(produk.tanggal_pengundangan)],
@@ -520,9 +518,31 @@ function MetadataView({ produk }: { produk: ProdukHukum }) {
     ["Subjek", produk.subjek],
     ["Status", produk.status],
     ["Bidang", produk.bidang],
-    ["Dilihat", produk.dilihat != null ? `${produk.dilihat} kali` : undefined],
+    [
+      "Dilihat",
+      produk.dilihat != null ? `${produk.dilihat} kali` : undefined,
+    ],
     ["Diunduh", `${(produk as any).download ?? 0} kali`],
   ];
+
+  const optionalFields = new Set([
+    "Tipe Dokumen",
+    "Tempat Penetapan",
+    "Sumber",
+    "Subjek",
+  ]);
+
+  const filteredRows = rows.filter(([label, value]) => {
+    if (!optionalFields.has(label)) {
+      return true;
+    }
+
+    return (
+      value !== null &&
+      value !== undefined &&
+      String(value).trim() !== ""
+    );
+  });
 
   return (
     <div>
@@ -545,35 +565,44 @@ function MetadataView({ produk }: { produk: ProdukHukum }) {
       </div>
 
       <dl className="divide-y divide-border">
-        {rows.map(([label, value]) => (
-          <div
-            key={label}
-            className="grid grid-cols-[145px_1fr] gap-4 py-3 text-sm sm:grid-cols-[190px_1fr]"
-          >
-            <dt className="font-semibold text-foreground">{label}</dt>
+        {filteredRows.map(([label, value]) => {
+          const hasValue =
+            value !== null &&
+            value !== undefined &&
+            String(value).trim() !== "";
 
-            <dd className="break-words text-muted-foreground">
-              {value !== undefined && value !== "" ? (
-                String(value).startsWith("http") ? (
-                  <a
-                    href={String(value)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    {value}
-                  </a>
+          return (
+            <div
+              key={label}
+              className="grid grid-cols-[145px_1fr] gap-4 py-3 text-sm sm:grid-cols-[190px_1fr]"
+            >
+              <dt className="font-semibold text-foreground">
+                {label}
+              </dt>
+
+              <dd className="break-words text-muted-foreground">
+                {hasValue ? (
+                  String(value).startsWith("http") ? (
+                    <a
+                      href={String(value)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      {value}
+                    </a>
+                  ) : (
+                    value
+                  )
                 ) : (
-                  value
-                )
-              ) : (
-                <span className="italic text-muted-foreground/60">
-                  – belum diisi –
-                </span>
-              )}
-            </dd>
-          </div>
-        ))}
+                  <span className="italic text-muted-foreground/60">
+                    – belum diisi –
+                  </span>
+                )}
+              </dd>
+            </div>
+          );
+        })}
       </dl>
     </div>
   );
@@ -687,9 +716,8 @@ function PreviewAbstrakView({ produk }: { produk: ProdukHukum }) {
               key={reloadKey}
               src={produk.file_abstrak}
               title={`Preview abstrak ${produk.judul}`}
-              className={`h-full w-full transition-opacity duration-300 ${
-                loaded ? "opacity-100" : "opacity-0"
-              }`}
+              className={`h-full w-full transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"
+                }`}
               onLoad={() => setLoaded(true)}
               onError={() => setFailed(true)}
             />
@@ -739,9 +767,8 @@ function PreviewPeraturanView({ produk }: { produk: ProdukHukum }) {
               key={reloadKey}
               src={produk.file_dokumen}
               title={`Preview peraturan ${produk.judul}`}
-              className={`h-full w-full transition-opacity duration-300 ${
-                loaded ? "opacity-100" : "opacity-0"
-              }`}
+              className={`h-full w-full transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"
+                }`}
               onLoad={() => setLoaded(true)}
               onError={() => setFailed(true)}
             />
@@ -894,13 +921,12 @@ function PillButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
-        disabled
-          ? "cursor-not-allowed bg-secondary/50 text-muted-foreground/40"
-          : active
-            ? "bg-primary text-primary-foreground shadow-sm"
-            : "bg-secondary text-secondary-foreground hover:bg-border"
-      }`}
+      className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${disabled
+        ? "cursor-not-allowed bg-secondary/50 text-muted-foreground/40"
+        : active
+          ? "bg-primary text-primary-foreground shadow-sm"
+          : "bg-secondary text-secondary-foreground hover:bg-border"
+        }`}
     >
       {children}
     </button>

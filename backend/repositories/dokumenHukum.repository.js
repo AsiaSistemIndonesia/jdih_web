@@ -127,76 +127,73 @@ const create = async ({
     kategori,
     nomor,
     tahun,
-    file_abstrak,
+    file_abstrak = null,
     file_dokumen,
     bidang,
-    tipe_dokumen,
-    tempat_penetapan,
+    tipe_dokumen = null,
+    tempat_penetapan = null,
     tanggal_penetapan,
     tanggal_pengundangan,
     tanggal_berlaku,
-    sumber,
-    subject,
-    status = true,
+    sumber = null,
+    subject = null,
+    status,
 }) => {
     const query = `
-        INSERT INTO dokumen_hukum (
-            judul,
-            kategori,
-            nomor,
-            tahun,
-            file_abstrak,
-            file_dokumen,
-            bidang,
-            tipe_dokumen,
-            tempat_penetapan,
-            tanggal_penetapan,
-            tanggal_pengundangan,
-            tanggal_berlaku,
-            sumber,
-            subjek,
-            status
-        )
-        VALUES (
-            $1,
-            $2,
-            $3,
-            $4,
-            $5,
-            $6,
-            $7,
-            $8,
-            $9,
-            $10,
-            $11,
-            $12,
-            $13,
-            $14,
-            $15
-        )
-        RETURNING *
-    `;
+    INSERT INTO dokumen_hukum (
+      judul,
+      kategori,
+      nomor,
+      tahun,
+      file_abstrak,
+      file_dokumen,
+      bidang,
+      tipe_dokumen,
+      tempat_penetapan,
+      tanggal_penetapan,
+      tanggal_pengundangan,
+      tanggal_berlaku,
+      sumber,
+      subjek,
+      status
+    )
+    VALUES (
+      $1,
+      $2,
+      $3,
+      $4,
+      $5,
+      $6,
+      $7,
+      $8,
+      $9,
+      $10,
+      $11,
+      $12,
+      $13,
+      $14,
+      $15
+    )
+    RETURNING *
+  `;
 
-    const result = await pool.query(
-        query,
-        [
-            judul,
-            kategori,
-            nomor,
-            tahun,
-            file_abstrak,
-            file_dokumen,
-            bidang,
-            tipe_dokumen,
-            tempat_penetapan,
-            tanggal_penetapan,
-            tanggal_pengundangan,
-            tanggal_berlaku,
-            sumber,
-            subject,
-            status,
-        ]
-    );
+    const result = await pool.query(query, [
+        judul,
+        kategori,
+        nomor,
+        Number(tahun),
+        file_abstrak || null,
+        file_dokumen,
+        bidang,
+        tipe_dokumen || null,
+        tempat_penetapan || null,
+        tanggal_penetapan,
+        tanggal_pengundangan,
+        tanggal_berlaku,
+        sumber || null,
+        subject || null,
+        status,
+    ]);
 
     return result.rows[0];
 };
@@ -335,7 +332,7 @@ const incrementDownload = async (id) => {
 };
 
 const getSummary = async () => {
-  const query = `
+    const query = `
     SELECT
       COUNT(*) AS produk_hukum,
 
@@ -355,9 +352,9 @@ const getSummary = async () => {
     WHERE deleted_at IS NULL
   `;
 
-  const result = await pool.query(query);
+    const result = await pool.query(query);
 
-  return result.rows[0];
+    return result.rows[0];
 };
 
 
@@ -566,7 +563,7 @@ const findRelated = async (id) => {
 };
 
 const dynamisDownload = async (dokumenId) => {
-  const query = `
+    const query = `
     UPDATE dokumen_hukum
     SET download = COALESCE(download, 0) + 1,
         updated_at = NOW()
@@ -574,13 +571,13 @@ const dynamisDownload = async (dokumenId) => {
     RETURNING id, download, dilihat
   `;
 
-  const { rows } = await pool.query(query, [dokumenId]);
+    const { rows } = await pool.query(query, [dokumenId]);
 
-  return rows[0] || null;
+    return rows[0] || null;
 };
 
 const dinamisPreview = async (dokumenId) => {
-  const query = `
+    const query = `
     UPDATE dokumen_hukum
     SET dilihat = COALESCE(dilihat, 0) + 1,
         updated_at = NOW()
@@ -588,9 +585,9 @@ const dinamisPreview = async (dokumenId) => {
     RETURNING id, download, dilihat
   `;
 
-  const { rows } = await pool.query(query, [dokumenId]);
+    const { rows } = await pool.query(query, [dokumenId]);
 
-  return rows[0] || null;
+    return rows[0] || null;
 };
 
 module.exports = {

@@ -3,7 +3,7 @@ export type DokumenHukum = {
   judul: string;
   kategori: number;
   nomor: string;
-  tahun: number;
+  tahun: string;
   bidang: string;
   tipe_dokumen: number;
   tempat_penetapan: string;
@@ -24,7 +24,7 @@ export type DokumenHukumRequest = {
   judul: string;
   kategori: number;
   nomor: string;
-  tahun: number;
+  tahun: string;
   bidang: string;
   tipe_dokumen: number;
   tempat_penetapan: string;

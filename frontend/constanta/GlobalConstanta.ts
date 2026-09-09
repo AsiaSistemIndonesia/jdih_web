@@ -1,5 +1,4 @@
-export const APP_BASE_URL =
-  process.env.NEXT_PUBLIC_APP_BASE_URL ?? "https://jdih-be.asiasistem.com";
+export const APP_BASE_URL = process.env.NEXT_PUBLIC_APP_BASE_URL ?? "https://jdih-be.asiasistem.com";
 
 export const DOKUMEN_ENDPOINT = "/dokumen";
 export const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
@@ -85,160 +84,216 @@ export const kategoriOptions = [
 
 export const tipeDokumenOptions = [
   {
-    label: "Peraturan Daerah",
-    value: "Peraturan Daerah",
+    value: "Undang-Undang",
+    label: "Undang-Undang",
   },
   {
-    label: "Peraturan Kepala Daerah",
-    value: "Peraturan Kepala Daerah",
+    value: "Peraturan Pemerintah",
+    label: "Peraturan Pemerintah",
   },
   {
-    label: "Peraturan Desa",
-    value: "Peraturan Desa",
+    value: "Peraturan Presiden",
+    label: "Peraturan Presiden",
   },
   {
-    label: "Keputusan Kepala Daerah",
-    value: "Keputusan Kepala Daerah",
+    value: "Peraturan Menteri",
+    label: "Peraturan Menteri",
   },
   {
-    label: "Keputusan Kepala Perangkat Daerah",
-    value: "Keputusan Kepala Perangkat Daerah",
+    value: "Peraturan Lembaga",
+    label: "Peraturan Lembaga",
   },
   {
-    label: "Instruksi Kepala Daerah",
-    value: "Instruksi Kepala Daerah",
+    value: "Peraturan Kepala BIN",
+    label: "Peraturan Kepala BIN",
   },
   {
-    label: "Surat Edaran",
+    value: "Keputusan Kepala BIN",
+    label: "Keputusan Kepala BIN",
+  },
+  {
+    value: "Instruksi Kepala BIN",
+    label: "Instruksi Kepala BIN",
+  },
+  {
     value: "Surat Edaran",
+    label: "Surat Edaran",
   },
   {
-    label: "Rancangan Peraturan Daerah",
-    value: "Rancangan Peraturan Daerah",
+    value: "Perjanjian Kerja Sama",
+    label: "Perjanjian Kerja Sama",
   },
   {
-    label: "Naskah Akademik",
-    value: "Naskah Akademik",
-  },
-  {
-    label: "Putusan Pengadilan",
     value: "Putusan Pengadilan",
+    label: "Putusan Pengadilan",
   },
   {
-    label: "Yurisprudensi",
     value: "Yurisprudensi",
+    label: "Yurisprudensi",
   },
   {
-    label: "Perjanjian / Kerja Sama",
-    value: "Perjanjian / Kerja Sama",
+    value: "Naskah Akademik",
+    label: "Naskah Akademik",
   },
   {
-    label: "Monografi Hukum",
     value: "Monografi Hukum",
+    label: "Monografi Hukum",
   },
   {
-    label: "Artikel / Jurnal Hukum",
-    value: "Artikel / Jurnal Hukum",
-  },
-  {
-    label: "Dokumen Hukum Internasional",
-    value: "Dokumen Hukum Internasional",
-  },
-  {
-    label: "Dokumen Hukum Lainnya",
-    value: "Dokumen Hukum Lainnya",
+    value: "Artikel Hukum",
+    label: "Artikel Hukum",
   },
 ];
+
 export const bidangOptions = [
   {
-    value: "",
-    label: "Pilih bidang",
-  },
-  {
-    value: "Hukum Umum",
-    label: "Hukum Umum",
-  },
-  {
-    value: "Hukum Adat",
-    label: "Hukum Adat",
+    value: "Hukum Tata Negara",
+    label: "Hukum Tata Negara",
   },
   {
     value: "Hukum Administrasi Negara",
     label: "Hukum Administrasi Negara",
   },
   {
-    value: "Hukum Agraria",
-    label: "Hukum Agraria",
+    value: "Hukum Pidana",
+    label: "Hukum Pidana",
   },
   {
-    value: "Hukum Dagang",
-    label: "Hukum Dagang",
-  },
-  {
-    value: "Hukum Islam",
-    label: "Hukum Islam",
-  },
-  {
-    value: "Hukum Internasional",
-    label: "Hukum Internasional",
-  },
-  {
-    value: "Hukum Lingkungan",
-    label: "Hukum Lingkungan",
-  },
-  {
-    value: "Hukum Perburuhan",
-    label: "Hukum Perburuhan",
+    value: "Hukum Acara Pidana",
+    label: "Hukum Acara Pidana",
   },
   {
     value: "Hukum Perdata",
     label: "Hukum Perdata",
   },
   {
-    value: "Hukum Pidana",
-    label: "Hukum Pidana",
+    value: "Hukum Acara Perdata",
+    label: "Hukum Acara Perdata",
   },
   {
-    value: "Hukum Tata Negara",
-    label: "Hukum Tata Negara",
+    value: "Hukum Internasional",
+    label: "Hukum Internasional",
   },
   {
-    value: "Himpunan Peraturan",
-    label: "Himpunan Peraturan",
+    value: "Hukum Administrasi Pemerintahan",
+    label: "Hukum Administrasi Pemerintahan",
   },
   {
-    value: "Putusan Pengadilan",
-    label: "Putusan Pengadilan",
+    value: "Hukum Kepegawaian",
+    label: "Hukum Kepegawaian",
   },
   {
-    value: "Referensi",
-    label: "Referensi",
+    value: "Hukum Keuangan Negara",
+    label: "Hukum Keuangan Negara",
   },
   {
-    value: "Hukum Acara Pidana",
-    label: "Hukum Acara Pidana",
+    value: "Hukum Perjanjian",
+    label: "Hukum Perjanjian",
   },
+  {
+    value: "Hukum Siber",
+    label: "Hukum Siber",
+  },
+  {
+    value: "Hukum Perlindungan Data",
+    label: "Hukum Perlindungan Data",
+  },
+  {
+    value: "Hukum Hak Asasi Manusia",
+    label: "Hukum Hak Asasi Manusia",
+  },
+  {
+    value: "Hukum Pengadaan Barang dan Jasa",
+    label: "Hukum Pengadaan Barang dan Jasa",
+  }
 ];
 
 export const subjectOptions = [
   {
-    value: "",
-    label: "Pilih subject",
+    value: "Intelijen Negara",
+    label: "Intelijen Negara",
   },
   {
-    value: "Kode Etik Badan Pemeriksa Keuangan",
-    label: "Kode Etik Badan Pemeriksa Keuangan",
+    value: "Penyelenggaraan Intelijen Negara",
+    label: "Penyelenggaraan Intelijen Negara",
   },
   {
-    value: "Pemeriksaan Keuangan Negara",
-    label: "Pemeriksaan Keuangan Negara",
+    value: "Kelembagaan BIN",
+    label: "Kelembagaan BIN",
   },
   {
-    value: "Administrasi Negara",
-    label: "Administrasi Negara",
+    value: "Organisasi dan Tata Kerja",
+    label: "Organisasi dan Tata Kerja",
   },
+  {
+    value: "Tugas dan Fungsi",
+    label: "Tugas dan Fungsi",
+  },
+  {
+    value: "Sumber Daya Manusia",
+    label: "Sumber Daya Manusia",
+  },
+  {
+    value: "Kepegawaian",
+    label: "Kepegawaian",
+  },
+  {
+    value: "Kode Etik",
+    label: "Kode Etik",
+  },
+  {
+    value: "Disiplin Pegawai",
+    label: "Disiplin Pegawai",
+  },
+  {
+    value: "Pengadaan Barang dan Jasa",
+    label: "Pengadaan Barang dan Jasa",
+  },
+  {
+    value: "Keuangan Negara",
+    label: "Keuangan Negara",
+  },
+  {
+    value: "Barang Milik Negara",
+    label: "Barang Milik Negara",
+  },
+  {
+    value: "Kerja Sama Dalam Negeri",
+    label: "Kerja Sama Dalam Negeri",
+  },
+  {
+    value: "Kerja Sama Internasional",
+    label: "Kerja Sama Internasional",
+  },
+  {
+    value: "Keamanan Nasional",
+    label: "Keamanan Nasional",
+  },
+  {
+    value: "Pertahanan dan Keamanan",
+    label: "Pertahanan dan Keamanan",
+  },
+  {
+    value: "Keamanan Siber",
+    label: "Keamanan Siber",
+  },
+  {
+    value: "Teknologi Informasi",
+    label: "Teknologi Informasi",
+  },
+  {
+    value: "Pelindungan Data",
+    label: "Pelindungan Data",
+  },
+  {
+    value: "Informasi dan Dokumentasi",
+    label: "Informasi dan Dokumentasi",
+  },
+  {
+    value: "Keterbukaan Informasi Publik",
+    label: "Keterbukaan Informasi Publik",
+  }
 ];
-
 export const statusOptions = [
   {
     value: "",
@@ -255,7 +310,7 @@ export const statusOptions = [
 ];
 
 export const getTahunOptions = () => {
-  const options = [
+  const options: { value: string; label: string }[] = [
     {
       value: "",
       label: "Pilih tahun",
@@ -263,7 +318,8 @@ export const getTahunOptions = () => {
   ];
 
   for (let tahun = 2026; tahun >= 1970; tahun--) {
-    const tahunStr = tahun.toString();
+    const tahunStr = String(tahun);
+
     options.push({
       value: tahunStr,
       label: tahunStr,
@@ -273,4 +329,5 @@ export const getTahunOptions = () => {
   return options;
 };
 
-export const tahunOptions = getTahunOptions();
+export const tahunOptions: { value: string; label: string }[] =
+  getTahunOptions();

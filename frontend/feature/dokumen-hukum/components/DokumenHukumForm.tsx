@@ -50,16 +50,16 @@ export default function DokumenHukumForm({
 }: DokumenHukumFormProps) {
   const isEdit = mode === "edit";
   const formatDateInput = (value?: string | null) => {
-  if (!value) return "";
+    if (!value) return "";
 
-  const date = new Date(value);
+    const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) {
-    return "";
-  }
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
 
-  return date.toISOString().split("T")[0];
-};
+    return date.toISOString().split("T")[0];
+  };
 
   const createDokumenHukum = useCreateDokumenHukum();
 
@@ -83,7 +83,7 @@ export default function DokumenHukumForm({
       judul: "",
       kategori: "",
       nomor: "",
-      tahun: 0,
+      tahun: "",
       bidang: "",
       tipe_dokumen: "",
 
@@ -108,7 +108,7 @@ export default function DokumenHukumForm({
     judul: "",
     kategori: "",
     nomor: "",
-    tahun: 0,
+    tahun: "",
     bidang: "",
     tipe_dokumen: "",
 
@@ -137,10 +137,10 @@ export default function DokumenHukumForm({
         : "",
 
     nomor: data.nomor ?? "",
-
     tahun:
-      data.tahun !== undefined && data.tahun !== null ? Number(data.tahun) : 0,
-
+      data.tahun !== undefined && data.tahun !== null
+        ? String(data.tahun)
+        : "",
     bidang: data.bidang ?? "",
 
     tipe_dokumen:
@@ -148,7 +148,7 @@ export default function DokumenHukumForm({
         ? String(data.tipe_dokumen)
         : "",
 
-    tempat_penetapan:  data.tempat_penetapan ?? "",
+    tempat_penetapan: data.tempat_penetapan ?? "",
 
     tanggal_penetapan: formatDateInput(data.tanggal_penetapan) ?? "",
 
@@ -198,19 +198,18 @@ export default function DokumenHukumForm({
 
     formData.append("bidang", values.bidang);
 
-    formData.append("tipe_dokumen", values.tipe_dokumen);
+    formData.append("tipe_dokumen", values.tipe_dokumen ?? "");
 
-    formData.append("tempat_penetapan", values.tempat_penetapan.trim());
-
+    formData.append("tempat_penetapan", values.tempat_penetapan?.trim() ?? "");
     formData.append("tanggal_penetapan", values.tanggal_penetapan);
 
     formData.append("tanggal_pengundangan", values.tanggal_pengundangan);
 
     formData.append("tanggal_berlaku", values.tanggal_berlaku);
 
-    formData.append("sumber", values.sumber.trim());
+    formData.append("sumber", values.sumber?.trim() ?? "");
 
-    formData.append("subject", values.subject);
+    formData.append("subject", values.subject ?? "");
 
     formData.append("status", values.status);
 
@@ -222,10 +221,10 @@ export default function DokumenHukumForm({
       formData.append("file_dokumen", values.file_dokumen);
     }
 
-    
+
 
     formData.forEach((value, key) => {
-      
+
     });
 
     if (!isEdit) {
@@ -243,16 +242,12 @@ export default function DokumenHukumForm({
 
           toast.error(message);
 
-          
+
         },
       });
 
       return;
     }
-
-    // ==========================================================
-    // EDIT
-    // ==========================================================
 
     const dokumenId = Number(values.id);
 
@@ -281,20 +276,16 @@ export default function DokumenHukumForm({
 
           toast.error(message);
 
-          
+
         },
       },
     );
   };
 
-  // ============================================================
-  // INVALID
-  // ============================================================
-
   const onInvalid: SubmitErrorHandler<DokumenHukumFormValues> = (
     formErrors,
   ) => {
-    
+
 
     const firstError = Object.values(formErrors)[0];
 
@@ -307,10 +298,6 @@ export default function DokumenHukumForm({
     handleSubmit(onSubmit, onInvalid)();
   };
 
-  // ============================================================
-  // RESET
-  // ============================================================
-
   const resetForm = () => {
     if (isEdit && data) {
       reset(getEditValues(data));
@@ -319,17 +306,8 @@ export default function DokumenHukumForm({
 
     reset(getDefaultValues());
   };
-
-  // ============================================================
-  // SUBMITTING
-  // ============================================================
-
   const isSubmitting =
     createDokumenHukum.isPending || updateDokumenHukum.isPending;
-
-  // ============================================================
-  // FILE
-  // ============================================================
 
   const fileAbstrak = watch("file_abstrak");
 
@@ -396,26 +374,24 @@ export default function DokumenHukumForm({
             py-6
             text-center
             transition-all
-            ${
-              error
-                ? `
+            ${error
+              ? `
                   border-red-300
                   bg-red-50/40
                 `
-                : `
+              : `
                   border-slate-200
                   bg-slate-50/70
                   hover:border-blue-400
                   hover:bg-blue-50/40
                 `
             }
-            ${
-              isSubmitting
-                ? `
+            ${isSubmitting
+              ? `
                   cursor-not-allowed
                   opacity-60
                 `
-                : ""
+              : ""
             }
           `}
         >
@@ -560,16 +536,8 @@ export default function DokumenHukumForm({
     );
   };
 
-  // ============================================================
-  // RENDER
-  // ============================================================
-
   return (
     <div className="space-y-6">
-      {/* ======================================================
-          HEADER
-      ====================================================== */}
-
       <div
         className="
         flex
@@ -624,10 +592,6 @@ export default function DokumenHukumForm({
           </p>
         </div>
       </div>
-
-      {/* ======================================================
-          INFORMASI DOKUMEN
-      ====================================================== */}
 
       <div
         className="
@@ -728,7 +692,6 @@ export default function DokumenHukumForm({
             name="tipe_dokumen"
             control={control}
             label="Tipe Dokumen"
-            required
             placeholder="Pilih tipe dokumen..."
             options={tipeDokumenOptions}
             error={errors.tipe_dokumen?.message}
@@ -775,23 +738,19 @@ export default function DokumenHukumForm({
             isClearable
           />
 
-          
+
 
           <FormInput
             type="text"
             label="Tempat Penetapan"
             required
-            placeholder="Masukkan tempat penetapan"
+            placeholder="Contoh Jakarta,Surabaya"
             {...register("tempat_penetapan")}
             error={errors.tempat_penetapan?.message}
             disabled={isSubmitting}
           />
         </div>
       </div>
-
-      {/* ======================================================
-          DETAIL PENETAPAN
-      ====================================================== */}
 
       <div
         className="
@@ -904,7 +863,7 @@ export default function DokumenHukumForm({
             disabled={isSubmitting}
           />
 
-          
+
           <FormSelect2
             name="subject"
             control={control}

@@ -21,7 +21,7 @@ const getAll = async (req, res) => {
         });
 
     } catch (error) {
-        
+
 
         return res.status(400).json({
             success: false,
@@ -43,7 +43,7 @@ const getById = async (req, res) => {
         });
 
     } catch (error) {
-        
+
 
         return res.status(404).json({
             success: false,
@@ -52,9 +52,76 @@ const getById = async (req, res) => {
     }
 };
 
+// const create = async (req, res) => {
+//     try {
+
+//         const {
+//             judul,
+//             kategori,
+//             nomor,
+//             tahun,
+//             bidang,
+//             tipe_dokumen,
+//             tempat_penetapan,
+//             tanggal_penetapan,
+//             tanggal_pengundangan,
+//             tanggal_berlaku,
+//             sumber,
+//             subject,
+//             status,
+//         } = req.body;
+
+//         const fileAbstrak =
+//             req.files?.file_abstrak?.[0]?.filename || null;
+
+//         const fileDokumen =
+//             req.files?.file_dokumen?.[0]?.filename || null;
+
+
+
+//         if (!judul) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "Judul wajib diisi",
+//             });
+//         }
+
+//         const result =
+//             await dokumenHukumService.create({
+//                 judul,
+//                 kategori,
+//                 nomor,
+//                 tahun,
+//                 file_abstrak: fileAbstrak,
+//                 file_dokumen: fileDokumen,
+//                 bidang,
+//                 tipe_dokumen,
+//                 tempat_penetapan,
+//                 tanggal_penetapan,
+//                 tanggal_pengundangan,
+//                 tanggal_berlaku,
+//                 sumber,
+//                 subject,
+//                 status,
+//             });
+
+//         return res.status(201).json({
+//             success: true,
+//             message: "Dokumen hukum berhasil dibuat",
+//             data: result,
+//         });
+
+//     } catch (error) {
+
+
+//         return res.status(400).json({
+//             success: false,
+//             message: error.message,
+//         });
+//     }
+// };
 const create = async (req, res) => {
     try {
-        
         const {
             judul,
             kategori,
@@ -72,51 +139,115 @@ const create = async (req, res) => {
         } = req.body;
 
         const fileAbstrak =
-            req.files?.file_abstrak?.[0]?.filename || null;
+            req.files?.file_abstrak?.[0]?.filename ?? null;
 
         const fileDokumen =
-            req.files?.file_dokumen?.[0]?.filename || null;
+            req.files?.file_dokumen?.[0]?.filename ?? null;
 
-
-
-        if (!judul) {
+        if (!judul?.trim()) {
             return res.status(400).json({
                 success: false,
                 message: "Judul wajib diisi",
             });
         }
 
-        const result =
-            await dokumenHukumService.create({
-                judul,
-                kategori,
-                nomor,
-                tahun,
-                file_abstrak: fileAbstrak,
-                file_dokumen: fileDokumen,
-                bidang,
-                tipe_dokumen,
-                tempat_penetapan,
-                tanggal_penetapan,
-                tanggal_pengundangan,
-                tanggal_berlaku,
-                sumber,
-                subject,
-                status,
+        if (!kategori?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Kategori wajib dipilih",
             });
+        }
+
+        if (!nomor?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Nomor wajib diisi",
+            });
+        }
+
+        if (!tahun?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Tahun wajib diisi",
+            });
+        }
+
+        if (!bidang?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Bidang wajib dipilih",
+            });
+        }
+
+        if (!tanggal_penetapan?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Tanggal penetapan wajib diisi",
+            });
+        }
+
+        if (!tanggal_pengundangan?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Tanggal pengundangan wajib diisi",
+            });
+        }
+
+        if (!tanggal_berlaku?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Tanggal berlaku wajib diisi",
+            });
+        }
+
+        if (!status?.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Status wajib dipilih",
+            });
+        }
+
+        if (!fileDokumen) {
+            return res.status(400).json({
+                success: false,
+                message: "File dokumen wajib diisi",
+            });
+        }
+
+        const result = await dokumenHukumService.create({
+            judul: judul.trim(),
+            kategori: kategori.trim(),
+            nomor: nomor.trim(),
+            tahun: tahun.trim(),
+            bidang: bidang.trim(),
+            tipe_dokumen: tipe_dokumen?.trim() || null,
+            tempat_penetapan: tempat_penetapan?.trim() || null,
+            sumber: sumber?.trim() || null,
+            subject: subject?.trim() || null,
+
+            file_abstrak: fileAbstrak,
+            file_dokumen: fileDokumen,
+
+            tanggal_penetapan: tanggal_penetapan.trim(),
+            tanggal_pengundangan: tanggal_pengundangan.trim(),
+            tanggal_berlaku: tanggal_berlaku.trim(),
+            status: status.trim(),
+        });
 
         return res.status(201).json({
             success: true,
             message: "Dokumen hukum berhasil dibuat",
             data: result,
         });
-
     } catch (error) {
-        
+        console.error("Create dokumen hukum error:", error);
 
         return res.status(400).json({
             success: false,
-            message: error.message,
+            message:
+                error instanceof Error
+                    ? error.message
+                    : "Gagal membuat dokumen hukum",
         });
     }
 };
@@ -178,7 +309,7 @@ const update = async (req, res) => {
         });
 
     } catch (error) {
-        
+
 
         return res.status(400).json({
             success: false,
@@ -200,7 +331,7 @@ const remove = async (req, res) => {
         });
 
     } catch (error) {
-        
+
         return res.status(400).json({
             success: false,
             message: error.message,
@@ -252,23 +383,23 @@ const incrementDownload = async (
 };
 
 const getSummary = async (req, res) => {
-  try {
-    const data = await dokumenHukumService.getSummary();
+    try {
+        const data = await dokumenHukumService.getSummary();
 
-    return res.status(200).json({
-      success: true,
-      message: "Summary dokumen hukum berhasil diambil",
-      data,
-    });
-  } catch (error) {
-    
+        return res.status(200).json({
+            success: true,
+            message: "Summary dokumen hukum berhasil diambil",
+            data,
+        });
+    } catch (error) {
 
-    return res.status(500).json({
-      success: false,
-      message: "Gagal mengambil summary dokumen hukum",
-      error: error.message,
-    });
-  }
+
+        return res.status(500).json({
+            success: false,
+            message: "Gagal mengambil summary dokumen hukum",
+            error: error.message,
+        });
+    }
 };
 
 
@@ -283,7 +414,7 @@ const getList = async (req, res) => {
             total: result.total,
         });
     } catch (error) {
-        
+
 
         return res.status(500).json({
             success: false,
@@ -320,7 +451,7 @@ const getAllWeb = async (req, res) => {
             pagination: result.pagination,
         });
     } catch (error) {
-        
+
         return res.status(500).json({
             success: false,
             message:
@@ -340,7 +471,7 @@ const getRelated = async (req, res) => {
             success: true,
             data,
         });
-    } catch (error) {   
+    } catch (error) {
         console.error(error);
 
         return res.status(500).json({
@@ -352,51 +483,51 @@ const getRelated = async (req, res) => {
 
 
 const controlDownload = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const result =
-      await dokumenHukumService.serviceDownload(id);
+        const result =
+            await dokumenHukumService.serviceDownload(id);
 
-    return res.status(200).json({
-      success: true,
-      message: "Jumlah download berhasil diperbarui",
-      data: result,
-    });
-  } catch (error) {
-    console.error("incrementDownload:", error);
+        return res.status(200).json({
+            success: true,
+            message: "Jumlah download berhasil diperbarui",
+            data: result,
+        });
+    } catch (error) {
+        console.error("incrementDownload:", error);
 
-    return res.status(500).json({
-      success: false,
-      message:
-        error.message ||
-        "Gagal memperbarui jumlah download",
-    });
-  }
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Gagal memperbarui jumlah download",
+        });
+    }
 };
 
 const controlPreview = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const result =
-      await dokumenHukumService.servicePreview(id);
+        const result =
+            await dokumenHukumService.servicePreview(id);
 
-    return res.status(200).json({
-      success: true,
-      message: "Jumlah preview berhasil diperbarui",
-      data: result,
-    });
-  } catch (error) {
-    console.error("incrementPreview:", error);
+        return res.status(200).json({
+            success: true,
+            message: "Jumlah preview berhasil diperbarui",
+            data: result,
+        });
+    } catch (error) {
+        console.error("incrementPreview:", error);
 
-    return res.status(500).json({
-      success: false,
-      message:
-        error.message ||
-        "Gagal memperbarui jumlah preview",
-    });
-  }
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Gagal memperbarui jumlah preview",
+        });
+    }
 };
 
 module.exports = {

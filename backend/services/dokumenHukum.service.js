@@ -128,60 +128,73 @@ const create = async ({
     tanggal_berlaku = null,
     sumber = null,
     subject = null,
-    status = true,
+    status,
 }) => {
-    if (
-        !judul ||
-        !judul.trim()
-    ) {
-        throw new Error(
-            "Judul wajib diisi"
-        );
+    if (!judul?.trim()) {
+        throw new Error("Judul wajib diisi");
     }
 
-    if (
-        !kategori ||
-        !kategori.trim()
-    ) {
-        throw new Error(
-            "Kategori wajib diisi"
-        );
+    if (!kategori?.trim()) {
+        throw new Error("Kategori wajib diisi");
     }
 
-    if (
-        !nomor ||
-        !nomor.trim()
-    ) {
-        throw new Error(
-            "Nomor wajib diisi"
-        );
+    if (!nomor?.trim()) {
+        throw new Error("Nomor wajib diisi");
     }
 
     if (
         tahun === undefined ||
         tahun === null ||
-        tahun === ""
+        String(tahun).trim() === ""
     ) {
-        throw new Error(
-            "Tahun wajib diisi"
-        );
+        throw new Error("Tahun wajib diisi");
+    }
+
+    if (!bidang?.trim()) {
+        throw new Error("Bidang wajib diisi");
+    }
+
+    if (!tanggal_penetapan?.trim()) {
+        throw new Error("Tanggal penetapan wajib diisi");
+    }
+
+    if (!tanggal_pengundangan?.trim()) {
+        throw new Error("Tanggal pengundangan wajib diisi");
+    }
+
+    if (!tanggal_berlaku?.trim()) {
+        throw new Error("Tanggal berlaku wajib diisi");
+    }
+
+    if (!file_dokumen) {
+        throw new Error("File dokumen wajib diisi");
+    }
+
+    if (status === undefined || status === null || status === "") {
+        throw new Error("Status wajib dipilih");
+    }
+
+    const tahunNumber = Number(tahun);
+
+    if (!Number.isInteger(tahunNumber)) {
+        throw new Error("Tahun harus berupa angka");
     }
 
     return await dokumenHukumRepository.create({
         judul: judul.trim(),
         kategori: kategori.trim(),
         nomor: nomor.trim(),
-        tahun: Number(tahun),
-        file_abstrak,
+        tahun: tahunNumber,
+        file_abstrak: file_abstrak || null,
         file_dokumen,
-        bidang,
-        tipe_dokumen,
-        tempat_penetapan,
-        tanggal_penetapan,
-        tanggal_pengundangan,
-        tanggal_berlaku,
-        sumber,
-        subject,
+        bidang: bidang.trim(),
+        tipe_dokumen: tipe_dokumen?.trim() || null,
+        tempat_penetapan: tempat_penetapan?.trim() || null,
+        tanggal_penetapan: tanggal_penetapan.trim(),
+        tanggal_pengundangan: tanggal_pengundangan.trim(),
+        tanggal_berlaku: tanggal_berlaku.trim(),
+        sumber: sumber?.trim() || null,
+        subject: subject?.trim() || null,
         status,
     });
 };
@@ -334,14 +347,14 @@ const incrementDownload = async (id) => {
 };
 
 const getSummary = async () => {
-  const data = await dokumenHukumRepository.getSummary();
+    const data = await dokumenHukumRepository.getSummary();
 
-  return {
-    produk_hukum: Number(data.produk_hukum),
-    peraturan: Number(data.peraturan),
-    perundang_undangan: Number(data.perundang_undangan),
-    keputusan: Number(data.keputusan),
-  };
+    return {
+        produk_hukum: Number(data.produk_hukum),
+        peraturan: Number(data.peraturan),
+        perundang_undangan: Number(data.perundang_undangan),
+        keputusan: Number(data.keputusan),
+    };
 };
 
 const getList = async () => {
@@ -378,37 +391,37 @@ const findRelated = async (id) => {
 };
 
 const serviceDownload = async (dokumenId) => {
-  if (!dokumenId) {
-    throw new Error("ID dokumen tidak ditemukan");
-  }
+    if (!dokumenId) {
+        throw new Error("ID dokumen tidak ditemukan");
+    }
 
-  const result =
-    await dokumenHukumRepository.dynamisDownload(
-      dokumenId
-    );
+    const result =
+        await dokumenHukumRepository.dynamisDownload(
+            dokumenId
+        );
 
-  if (!result) {
-    throw new Error("Dokumen hukum tidak ditemukan");
-  }
+    if (!result) {
+        throw new Error("Dokumen hukum tidak ditemukan");
+    }
 
-  return result;
+    return result;
 };
 
 const servicePreview = async (dokumenId) => {
-  if (!dokumenId) {
-    throw new Error("ID dokumen tidak ditemukan");
-  }
+    if (!dokumenId) {
+        throw new Error("ID dokumen tidak ditemukan");
+    }
 
-  const result =
-    await dokumenHukumRepository.dinamisPreview(
-      dokumenId
-    );
+    const result =
+        await dokumenHukumRepository.dinamisPreview(
+            dokumenId
+        );
 
-  if (!result) {
-    throw new Error("Dokumen hukum tidak ditemukan");
-  }
+    if (!result) {
+        throw new Error("Dokumen hukum tidak ditemukan");
+    }
 
-  return result;
+    return result;
 };
 module.exports = {
     getAll,
