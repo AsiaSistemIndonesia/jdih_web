@@ -138,10 +138,6 @@ const create = async ({
         throw new Error("Kategori wajib diisi");
     }
 
-    if (!nomor?.trim()) {
-        throw new Error("Nomor wajib diisi");
-    }
-
     if (
         tahun === undefined ||
         tahun === null ||
@@ -150,20 +146,12 @@ const create = async ({
         throw new Error("Tahun wajib diisi");
     }
 
-    if (!bidang?.trim()) {
-        throw new Error("Bidang wajib diisi");
+    if (!tempat_penetapan?.trim()) {
+        throw new Error("Tempat penetapan wajib diisi");
     }
 
     if (!tanggal_penetapan?.trim()) {
         throw new Error("Tanggal penetapan wajib diisi");
-    }
-
-    if (!tanggal_pengundangan?.trim()) {
-        throw new Error("Tanggal pengundangan wajib diisi");
-    }
-
-    if (!tanggal_berlaku?.trim()) {
-        throw new Error("Tanggal berlaku wajib diisi");
     }
 
     if (!file_dokumen) {
@@ -183,16 +171,16 @@ const create = async ({
     return await dokumenHukumRepository.create({
         judul: judul.trim(),
         kategori: kategori.trim(),
-        nomor: nomor.trim(),
+        nomor: nomor?.trim() || null,
         tahun: tahunNumber,
         file_abstrak: file_abstrak || null,
         file_dokumen,
-        bidang: bidang.trim(),
+        bidang: bidang?.trim() || null,
         tipe_dokumen: tipe_dokumen?.trim() || null,
         tempat_penetapan: tempat_penetapan?.trim() || null,
         tanggal_penetapan: tanggal_penetapan.trim(),
-        tanggal_pengundangan: tanggal_pengundangan.trim(),
-        tanggal_berlaku: tanggal_berlaku.trim(),
+        tanggal_pengundangan: tanggal_pengundangan?.trim() || null,
+        tanggal_berlaku: tanggal_berlaku?.trim() || null,
         sumber: sumber?.trim() || null,
         subject: subject?.trim() || null,
         status,
@@ -249,15 +237,6 @@ const update = async (
     }
 
     if (
-        !nomor ||
-        !nomor.trim()
-    ) {
-        throw new Error(
-            "Nomor wajib diisi"
-        );
-    }
-
-    if (
         tahun === undefined ||
         tahun === null ||
         tahun === ""
@@ -267,12 +246,24 @@ const update = async (
         );
     }
 
+    if (!tempat_penetapan || !tempat_penetapan.trim()) {
+        throw new Error("Tempat penetapan wajib diisi");
+    }
+
+    if (!tanggal_penetapan || !tanggal_penetapan.trim()) {
+        throw new Error("Tanggal penetapan wajib diisi");
+    }
+
+    if (!status || !status.trim()) {
+        throw new Error("Status wajib dipilih");
+    }
+
     return await dokumenHukumRepository.update(
         id,
         {
             judul: judul.trim(),
             kategori: kategori.trim(),
-            nomor: nomor.trim(),
+            nomor: nomor?.trim() || null,
             tahun: Number(tahun),
 
             file_abstrak:
@@ -281,12 +272,12 @@ const update = async (
             file_dokumen:
                 file_dokumen || null,
 
-            bidang,
-            tipe_dokumen,
-            tempat_penetapan,
-            tanggal_penetapan,
-            tanggal_pengundangan,
-            tanggal_berlaku,
+            bidang: bidang?.trim() || null,
+            tipe_dokumen: tipe_dokumen?.trim() || null,
+            tempat_penetapan: tempat_penetapan.trim(),
+            tanggal_penetapan: tanggal_penetapan.trim(),
+            tanggal_pengundangan: tanggal_pengundangan?.trim() || null,
+            tanggal_berlaku: tanggal_berlaku?.trim() || null,
             sumber,
             subject,
             status,

@@ -11,6 +11,7 @@ const dokumenHukumRoute = require("./routes/dokumenHukum.route");
 const pengaturanRoute = require("./routes/pengaturan.route");
 const authRoutes = require("./routes/auth.route");
 const WebRoute = require("./routes/web.route");
+const chatRoute = require("./routes/chat.route");
 const authMiddleware = require("./middleware/authMiddleware");
 
 const app = express();
@@ -92,6 +93,8 @@ app.use("/api/master-data/user",authMiddleware, userRoute);
 app.use("/api/master-data/dokumen-hukum",authMiddleware, dokumenHukumRoute);
 
 app.use("/api/master-data/pengaturan",authMiddleware, pengaturanRoute);
+
+app.use("/api/master-data/chat", authMiddleware, chatRoute);
 
 app.use((req, res) => {
   return res.status(404).json({

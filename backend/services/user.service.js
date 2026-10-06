@@ -140,6 +140,7 @@ const update = async (
     {
         nama,
         email,
+        role,
         foto,
     }
 ) => {
@@ -183,7 +184,7 @@ const update = async (
         {
             nama: nama.trim(),
             email: email.trim(),
-
+            role,
             foto:
                 foto ||
                 existingUser.foto,

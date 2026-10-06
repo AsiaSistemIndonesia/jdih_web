@@ -158,13 +158,6 @@ const create = async (req, res) => {
             });
         }
 
-        if (!nomor?.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Nomor wajib diisi",
-            });
-        }
-
         if (!tahun?.trim()) {
             return res.status(400).json({
                 success: false,
@@ -172,10 +165,10 @@ const create = async (req, res) => {
             });
         }
 
-        if (!bidang?.trim()) {
+        if (!tempat_penetapan?.trim()) {
             return res.status(400).json({
                 success: false,
-                message: "Bidang wajib dipilih",
+                message: "Tempat penetapan wajib diisi",
             });
         }
 
@@ -183,20 +176,6 @@ const create = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Tanggal penetapan wajib diisi",
-            });
-        }
-
-        if (!tanggal_pengundangan?.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Tanggal pengundangan wajib diisi",
-            });
-        }
-
-        if (!tanggal_berlaku?.trim()) {
-            return res.status(400).json({
-                success: false,
-                message: "Tanggal berlaku wajib diisi",
             });
         }
 
@@ -217,9 +196,9 @@ const create = async (req, res) => {
         const result = await dokumenHukumService.create({
             judul: judul.trim(),
             kategori: kategori.trim(),
-            nomor: nomor.trim(),
+            nomor: nomor?.trim() || null,
             tahun: tahun.trim(),
-            bidang: bidang.trim(),
+            bidang: bidang?.trim() || null,
             tipe_dokumen: tipe_dokumen?.trim() || null,
             tempat_penetapan: tempat_penetapan?.trim() || null,
             sumber: sumber?.trim() || null,
@@ -229,8 +208,8 @@ const create = async (req, res) => {
             file_dokumen: fileDokumen,
 
             tanggal_penetapan: tanggal_penetapan.trim(),
-            tanggal_pengundangan: tanggal_pengundangan.trim(),
-            tanggal_berlaku: tanggal_berlaku.trim(),
+            tanggal_pengundangan: tanggal_pengundangan?.trim() || null,
+            tanggal_berlaku: tanggal_berlaku?.trim() || null,
             status: status.trim(),
         });
 

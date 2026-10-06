@@ -63,6 +63,7 @@ const create = async (req, res) => {
             nama,
             email,
             password,
+            role,
         } = req.body || {};
 
         if (!nama || !String(nama).trim()) {
@@ -88,13 +89,13 @@ const create = async (req, res) => {
 
         const foto = req.file?.filename || null;
 
-        const role = "Admin";
+        const finalRole = role || "Pengguna";
 
         const result = await userService.create({
             nama: String(nama).trim(),
             email: String(email).trim(),
             password,
-            role,
+            role: finalRole,
             foto,
         });
 
@@ -124,6 +125,7 @@ const update = async (req, res) => {
         const {
             nama,
             email,
+            role,
         } = req.body || {};
 
         if (!nama || !nama.trim()) {
@@ -149,6 +151,7 @@ const update = async (req, res) => {
                 {
                     nama: nama.trim(),
                     email: email.trim(),
+                    role: role || undefined,
                     foto,
                 }
             );
