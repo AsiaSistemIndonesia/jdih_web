@@ -363,7 +363,9 @@ function DokumenHukumContent() {
   const handleView = (
     row: DokumenHukum
   ) => {
-    
+    if (row.id) {
+      router.push(`/admin/dokumen-hukum/${row.id}`);
+    }
   };
 
 
@@ -489,6 +491,30 @@ function DokumenHukumContent() {
       },
 
       {
+        key: "tempat_penetapan",
+        label: "Tempat Penetapan",
+        sortable: true,
+
+        render: (value) => (
+          <span className="text-slate-600">
+            {String(value ?? "-")}
+          </span>
+        ),
+      },
+
+      {
+        key: "tanggal_penetapan",
+        label: "Tanggal Penetapan",
+        sortable: true,
+
+        render: (value) => (
+          <span className="text-slate-600">
+            {value ? new Date(String(value)).toLocaleDateString("id-ID") : "-"}
+          </span>
+        ),
+      },
+
+      {
         key: "status",
         label: "Status",
         width: "120px",
@@ -526,27 +552,19 @@ function DokumenHukumContent() {
       },
     ];
 
-  /**
-   * ============================================================
-   * RENDER
-   * ============================================================
-   */
-
   return (
-    <div className="min-h-screen bg-[#F8FAFC] px-5 py-8 sm:px-7 lg:px-8 lg:py-10">
+    <div className="min-h-screen bg-[#F8FAFC] ">
       <div className="mx-auto max-w-[1600px]">
 
         <DataTable
+          title="Dokumen Hukum"
+          description="Kelola pengguna yang digunakan untuk mengelola website HDH."
           data={data}
           columns={columns}
 
           getRowId={(row) =>
             String(row.id)
           }
-
-          title="Dokumen Hukum"
-
-          description="Kelola banner dan Dokumen Hukum yang ditampilkan pada halaman utama website JDIH."
 
           searchPlaceholder="Cari dokumen hukum..."
 
@@ -567,11 +585,6 @@ function DokumenHukumContent() {
             isFetching
           }
 
-          /**
-           * ====================================================
-           * PAGINATION
-           * ====================================================
-           */
 
           page={page}
 
@@ -592,13 +605,6 @@ function DokumenHukumContent() {
           currentSort={
             sort
           }
-
-          /**
-           * ====================================================
-           * PAGE CHANGE
-           * ====================================================
-           */
-
           onPageChange={(newPage) => {
             
             if (
@@ -613,12 +619,6 @@ function DokumenHukumContent() {
             });
           }}
 
-          /**
-           * ====================================================
-           * SIZE CHANGE
-           * ====================================================
-           */
-
           onSizeChange={(newSize) => {
             updateParams({
               size: newSize,
@@ -626,11 +626,6 @@ function DokumenHukumContent() {
             });
           }}
 
-          /**
-           * ====================================================
-           * SEARCH
-           * ====================================================
-           */
 
           onSearch={(value) => {
             updateParams({
@@ -638,12 +633,6 @@ function DokumenHukumContent() {
               page: 0,
             });
           }}
-
-          /**
-           * ====================================================
-           * SORT
-           * ====================================================
-           */
 
           onSort={(key, direction) => {
             updateParams({
@@ -662,10 +651,6 @@ function DokumenHukumContent() {
           ]}
         />
       </div>
-
-      {/* ======================================================
-          DRAWER
-      ====================================================== */}
 
       <DokumenHukumDrawer
         open={drawerOpen}

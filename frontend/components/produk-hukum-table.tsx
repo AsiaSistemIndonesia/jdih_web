@@ -13,10 +13,11 @@ import {
   RotateCcw,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { AppSelect, SelectOption } from "./ui/app-select";
 import { useDokumenHukumWebList } from "@/feature/web";
-import { bidangOptions, kategoriOptions, tahunOptions } from "@/constanta/GlobalConstanta";
+import { bidangOptions, kategoriOptions, tahunOptions, tipeDokumenOptions } from "@/constanta/GlobalConstanta";
 
 function getPageNumbers(
   current: number,
@@ -70,7 +71,6 @@ type SearchParams = {
   size: number;
   kategori: string;
   tahun: string;
-  bidang: string;
 };
 
 export function ProdukHukumTable() {
@@ -86,10 +86,7 @@ export function ProdukHukumTable() {
       tahunOptions[0],
     );
 
-  const [bidang, setBidang] =
-    useState<SelectOption | null>(
-      bidangOptions[0],
-    );
+
 
   const [searchParams, setSearchParams] =
     useState<SearchParams>({
@@ -98,7 +95,6 @@ export function ProdukHukumTable() {
       size: 10,
       kategori: "",
       tahun: "",
-      bidang: "",
     });
 
   const {
@@ -109,6 +105,8 @@ export function ProdukHukumTable() {
     searchParams,
   );
 
+  const pathname = usePathname();
+  const basePath = pathname?.startsWith("/admin") ? "/admin/dokumen-hukum" : "/dokumen-hukum";
 
   const peraturan = useMemo(() => {
     return (data as any)?.data ?? [];
@@ -174,11 +172,6 @@ export function ProdukHukumTable() {
         tahun?.value
           ? String(tahun.value)
           : "",
-
-      bidang:
-        bidang?.value
-          ? String(bidang.value)
-          : "",
     });
   };
 
@@ -189,15 +182,12 @@ export function ProdukHukumTable() {
 
     setTahun(tahunOptions[0]);
 
-    setBidang(bidangOptions[0]);
-
     setSearchParams({
       search: "",
       page: 1,
       size: 10,
       kategori: "",
       tahun: "",
-      bidang: "",
     });
   };
 
@@ -322,7 +312,7 @@ export function ProdukHukumTable() {
           <div className="lg:w-48">
             <AppSelect
               options={
-                kategoriOptions
+                tipeDokumenOptions
               }
               value={jenis}
               onChange={setJenis}
@@ -343,20 +333,7 @@ export function ProdukHukumTable() {
             />
           </div>
 
-          <div className="hidden h-8 w-px bg-border lg:block" />
 
-          {/* BIDANG */}
-
-          <div className="lg:min-w-[16rem] lg:flex-1">
-            <AppSelect
-              options={
-                bidangOptions
-              }
-              value={bidang}
-              onChange={setBidang}
-              placeholder="Bidang Hukum"
-            />
-          </div>
 
           {/* CARI */}
 
@@ -424,8 +401,7 @@ export function ProdukHukumTable() {
       </div>
       {(searchParams.search ||
         searchParams.kategori ||
-        searchParams.tahun ||
-        searchParams.bidang) && (
+        searchParams.tahun) && (
         <div className="flex flex-wrap items-center gap-2">
 
           <span className="text-xs text-muted-foreground">
@@ -480,21 +456,7 @@ export function ProdukHukumTable() {
             </span>
           )}
 
-          {searchParams.bidang && (
-            <span
-              className="
-                rounded-full
-                border border-primary/20
-                bg-primary/5
-                px-3 py-1
-                text-[11px]
-                font-medium
-                text-primary
-              "
-            >
-              {searchParams.bidang}
-            </span>
-          )}
+
         </div>
       )}
 
@@ -628,7 +590,7 @@ export function ProdukHukumTable() {
               ) => (
                 <Link
                   key={p.id}
-                  href={`/dokumen-hukum/${p.id}`}
+                  href={`${basePath}/${p.id}`}
                   className="
                     group
                     relative
@@ -790,25 +752,6 @@ export function ProdukHukumTable() {
                       sm:py-6
                     "
                   >
-
-                    {/* NOMOR */}
-
-                    <p
-                      className="
-                        truncate
-                        font-mono
-                        text-[10px]
-                        font-semibold
-                        uppercase
-                        tracking-[0.14em]
-                        text-muted-foreground
-                      "
-                    >
-                      {p.tipe_dokumen ||
-                        ""}
-
-                        - Nomor { " " + p.nomor}
-                    </p>
 
                     <h4
                       className="

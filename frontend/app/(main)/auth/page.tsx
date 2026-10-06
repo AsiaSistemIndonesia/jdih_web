@@ -68,7 +68,7 @@ export default function LoginPage() {
     }
 
     if (sessionQuery.data?.success) {
-      router.replace("/admin/dashboard");
+      router.replace("/admin/dokumen-hukum");
       return;
     }
 
@@ -142,7 +142,7 @@ export default function LoginPage() {
       setStatus("success");
 
       setTimeout(() => {
-        router.replace("/admin/dashboard");
+        router.replace("/admin/dokumen-hukum");
         router.refresh();
       }, 500);
     } catch (error: any) {
@@ -376,12 +376,12 @@ export default function LoginPage() {
 
                 <div>
                   <div
-                    className="jdih-heading text-[25px] font-extrabold tracking-tight"
+                    className="jdih-heading text-[18px] font-extrabold tracking-tight"
                     style={{
                       color: BLUE_DARK,
                     }}
                   >
-                    JDIH
+                    HARMONISASI DOKUMENTASI HUKUM
                   </div>
 
                   <div
@@ -390,7 +390,7 @@ export default function LoginPage() {
                       color: MUTED,
                     }}
                   >
-                    Jaringan Dokumentasi
+                    HDH
                   </div>
                 </div>
               </div>
@@ -401,9 +401,9 @@ export default function LoginPage() {
                   color: TEXT,
                 }}
               >
-                Pusat Dokumentasi
+                Harmonisasi
                 <br />
-                <span style={{ color: BLUE }}>Informasi Hukum</span>
+                <span style={{ color: BLUE }}>Dokumentasi Hukum</span>
               </h2>
 
               <p
@@ -413,7 +413,7 @@ export default function LoginPage() {
                 }}
               >
                 Akses dan kelola dokumentasi serta informasi hukum secara
-                terintegrasi melalui Portal JDIH. Temukan produk hukum,
+                terintegrasi melalui Portal HDH. Temukan produk hukum,
                 peraturan, keputusan, dan berbagai dokumen hukum dalam satu
                 sistem.
               </p>
@@ -599,12 +599,12 @@ export default function LoginPage() {
                 </div>
 
                 <div
-                  className="jdih-heading text-xl font-extrabold"
+                  className="jdih-heading text-lg font-extrabold"
                   style={{
                     color: BLUE_DARK,
                   }}
                 >
-                  JDIH
+                  HARMONISASI DOKUMENTASI HUKUM
                 </div>
 
                 <div
@@ -613,7 +613,7 @@ export default function LoginPage() {
                     color: MUTED,
                   }}
                 >
-                  Jaringan Dokumentasi & Informasi Hukum
+                  HDH
                 </div>
               </div>
 
@@ -624,7 +624,7 @@ export default function LoginPage() {
                     color: BLUE,
                   }}
                 >
-                  Portal JDIH
+                  Portal HDH
                 </div>
 
                 <h1
@@ -905,7 +905,7 @@ export default function LoginPage() {
                   }}
                 >
                   Akses terbatas untuk pengguna yang telah terdaftar pada sistem
-                  JDIH.
+                  HDH.
                 </p>
 
                 <div className="mt-4 flex items-center justify-center gap-2">

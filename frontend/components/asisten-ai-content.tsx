@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Send, Bot, Trash2, ArrowDown, Sparkles } from "lucide-react";
+import { Send, Bot, Trash2, ArrowDown, Sparkles, Plus, AlertTriangle, ArrowUp } from "lucide-react";
 import rehypeRaw from "rehype-raw";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
+
+
 import type { ChatMessage } from "@/types/chat";
-import { sendChatMessage } from "@/services/chat-service";
+import { sendChatMessage, saveSession, getSessionById, deleteSession } from "@/services/chat-service";
+import { SessionHook } from "@/feature/web";
 
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -28,10 +31,10 @@ function newId() {
 ========================= */
 const EmptyState = ({ onSelect }: { onSelect: (text: string) => void }) => {
   const suggestions = [
-    "Apa saja dasar hukum tugas Badan Intelijen Negara?",
-    "Jelaskan UU Intelijen Negara secara ringkas",
-    "Buatkan ringkasan regulasi keamanan nasional",
-    "Apa peran BIN dalam sistem pertahanan negara?",
+    "🔎 Cari Dokumen",
+    "📄 Analisis Dokumen",
+    "⚖️ Bandingkan Dokumen",
+    "✨ Ringkas Dokumen",
   ];
 
   return (
@@ -40,18 +43,10 @@ const EmptyState = ({ onSelect }: { onSelect: (text: string) => void }) => {
         <Sparkles size={26} />
       </div>
 
-      <h2 className="text-lg font-semibold mb-1">Asisten AI JDIH Intelijen</h2>
+      <h2 className="text-lg font-semibold mb-1">Asisten AI Harmonisasi Dokumen Hukum</h2>
 
       <p className="text-sm text-muted-foreground mb-4 max-w-md leading-relaxed">
-        Sistem ini menyediakan informasi terkait{" "}
-        <span className="font-medium text-foreground">
-          Jaringan Dokumentasi dan Informasi Hukum
-        </span>{" "}
-        serta regulasi yang berkaitan dengan{" "}
-        <span className="font-medium text-foreground">
-          Badan Intelijen Negara (BIN)
-        </span>
-        .
+        Sistem ini merupakan platform untuk mengelola, memproses, mencari, dan menganalisis dokumen hukum secara terstruktur.
       </p>
 
       <p className="text-xs text-muted-foreground mb-6">
@@ -138,12 +133,22 @@ const TypingDots = () => (
 /* =========================
    MAIN COMPONENT
 ========================= */
-export default function AsistenAIContent() {
+interface AsistenAIContentProps {
+  initialChatId?: string | null;
+}
+
+export default function AsistenAIContent({ initialChatId = null }: AsistenAIContentProps) {
   const [message, setMessage] = useState("");
   const [conversation, setConversation] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [showScroll, setShowScroll] = useState(false);
+
+  const session = SessionHook();
+  const userId = session?.data?.data?.id ?? "guest";
+
+  const getHistoryKey = () => `chat-history-${userId}`;
+  const getChatKey = (id: string) => `chat-${userId}-${id}`;
 
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -154,65 +159,47 @@ export default function AsistenAIContent() {
       .trim();
   }
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    let id = localStorage.getItem("conversation-id");
-
-    if (!id) {
-      id = crypto.randomUUID();
-      localStorage.setItem("conversation-id", id);
-    }
-
-    setConversationId(id);
-
-    const saved = localStorage.getItem(`chat-${id}`);
-
-    if (saved) {
-      try {
-        setConversation(JSON.parse(saved));
-      } catch {
-        setConversation([]);
-      }
-    }
-  }, []);
-
-  /* AUTO SAVE */
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || userId === "guest") return;
 
-    let id = localStorage.getItem("conversation-id");
-
-    if (!id) {
-      id = crypto.randomUUID();
-      localStorage.setItem("conversation-id", id);
-    }
-
-    setConversationId(id);
-
-    const saved = localStorage.getItem(`chat-${id}`);
-
-    if (saved) {
-      try {
-        setConversation(JSON.parse(saved));
-      } catch {
-        setConversation([]);
+    const loadSession = async () => {
+      let id = initialChatId;
+      if (!id) {
+        id = crypto.randomUUID();
+        setConversationId(id);
+      } else {
+        setConversationId(id);
+        const data = await getSessionById(id);
+        if (data && data.conversation) {
+          try {
+            setConversation(
+              typeof data.conversation === "string" 
+                ? JSON.parse(data.conversation) 
+                : data.conversation
+            );
+          } catch {
+            setConversation([]);
+          }
+        }
       }
-    }
+      setIsLoaded(true);
+    };
 
-    setIsLoaded(true);
-  }, []);
+    loadSession();
+  }, [initialChatId, userId]);
 
   useEffect(() => {
-    if (!conversationId || !isLoaded) return;
+    if (!conversationId || !isLoaded || userId === "guest") return;
 
-    localStorage.setItem(
-      `chat-${conversationId}`,
-      JSON.stringify(conversation),
-    );
-  }, [conversation, conversationId, isLoaded]);
+    if (conversation.length > 0) {
+      const title = conversation[0].type === "user" ? conversation[0].message : "Chat Baru";
+      saveSession(conversationId, title, conversation).then(() => {
+        window.dispatchEvent(new Event("chat-history-updated"));
+      });
+    }
+  }, [conversation, conversationId, isLoaded, userId]);
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -557,11 +544,11 @@ export default function AsistenAIContent() {
     }
   }, [message, conversationId, isTyping, conversation]);
 
-  const handleClear = () => {
-    if (!conversationId) return;
 
-    localStorage.removeItem(`chat-${conversationId}`);
+
+  const handleNewChat = () => {
     setConversation([]);
+    setConversationId(crypto.randomUUID());
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -573,133 +560,114 @@ export default function AsistenAIContent() {
   };
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-">
+    <div className="h-full flex flex-col overflow-hidden bg-transparent pt-4">
+      
+      {/* SCROLLABLE AREA (FULL WIDTH) */}
       <div
-        className="w-full flex justify-center border-b mb-3"
-        style={{ background: "none" }}
+        ref={containerRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-y-auto w-full relative"
       >
-        <div className="w-full max-w-[900px] h-16 flex items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
-              <Bot size={16} />
-            </div>
-            <div>
-              <div className="font-semibold text-sm">
-                Asisten Hukum Intelijen
-              </div>
-              <div className="text-xs text-muted-foreground">
-                JDIH Badan Intelijen Negara
-              </div>
-            </div>
-          </div>
+        <div className="flex justify-center min-h-full pb-4">
+          <div className="w-full max-w-[900px] p-4 flex flex-col">
+            {conversation.length === 0 ? (
+              <EmptyState onSelect={(text) => setMessage(text)} />
+            ) : (
+              <div className="space-y-4 flex-1 flex flex-col justify-end">
+                {conversation.map((msg, i) => {
+                  const isUser = msg.type === "user";
 
-          {/* KANAN (BUTTON) */}
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleClear}
-            className="gap-1 cursor-pointer"
-          >
-            <Trash2 size={14} />
-            Bersihkan
-          </Button>
-        </div>
-      </div>
-      <div className="flex-1 flex justify-center overflow-hidden">
-        {/* CONTAINER CHAT (FIX WIDTH 400px) */}
-        <div className="w-full max-w-[900px] flex flex-col h-full">
-          {/* CHAT AREA */}
-          <div className="relative flex-1 overflow-hidden">
-            <Card
-              ref={containerRef}
-              onScroll={handleScroll}
-              className="h-full overflow-y-auto p-4"
-            >
-              {conversation.length === 0 ? (
-                <EmptyState onSelect={(text) => setMessage(text)} />
-              ) : (
-                <div className="space-y-4">
-                  {conversation.map((msg, i) => {
-                    const isUser = msg.type === "user";
-
-                    return (
-                      <div
-                        key={msg.id}
-                        ref={
-                          i === conversation.length - 1 ? lastMessageRef : null
-                        }
-                        className={`flex gap-3 ${
-                          isUser ? "justify-end" : "justify-start"
+                  return (
+                    <div
+                      key={msg.id}
+                      ref={
+                        i === conversation.length - 1 ? lastMessageRef : null
+                      }
+                      className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"
                         }`}
+                    >
+                      {!isUser && (
+                        <div className="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white">
+                          <Bot size={16} />
+                        </div>
+                      )}
+
+                      <div
+                        className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm shadow-sm ${isUser
+                            ? "bg-primary text-white rounded-br-sm"
+                            : "bg-muted rounded-bl-sm"
+                          }`}
                       >
-                        {!isUser && (
-                          <div className="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white">
-                            <Bot size={16} />
-                          </div>
+                        {isUser ? (
+                          <p className="whitespace-pre-wrap leading-relaxed">
+                            {msg.message}
+                          </p>
+                        ) : (
+                          <AIMessageRenderer message={msg.message} />
                         )}
 
-                        <div
-                          className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm shadow-sm ${
-                            isUser
-                              ? "bg-primary text-white rounded-br-sm"
-                              : "bg-muted rounded-bl-sm"
-                          }`}
-                        >
-                          {isUser ? (
-                            <p className="whitespace-pre-wrap leading-relaxed">
-                              {msg.message}
-                            </p>
-                          ) : (
-                            <AIMessageRenderer message={msg.message} />
-                          )}
-
-                          <div className="text-[10px] mt-2 opacity-60 text-right">
-                            {msg.timestamp}
-                          </div>
+                        <div className="text-[10px] mt-2 opacity-60 text-right">
+                          {msg.timestamp}
                         </div>
                       </div>
-                    );
-                  })}
+                    </div>
+                  );
+                })}
 
-                  {isTyping && <TypingDots />}
-                </div>
-              )}
-            </Card>
-
-            {/* SCROLL BUTTON */}
-            {showScroll && (
-              <button
-                onClick={scrollToBottom}
-                className="absolute bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:scale-105 transition"
-              >
-                <ArrowDown size={18} />
-              </button>
+                {isTyping && <TypingDots />}
+              </div>
             )}
           </div>
+        </div>
 
-          {/* INPUT */}
-          <div className="flex gap-2 items-end border-t p-3 shrink-0">
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              disabled={isTyping}
-              placeholder="Tanyakan seputar peraturan,hukum..."
-              className="flex-1 resize-none rounded-xl border p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-60"
-              rows={1}
+        {/* SCROLL BUTTON */}
+        {showScroll && (
+          <button
+            onClick={scrollToBottom}
+            className="fixed bottom-24 right-8 bg-primary text-white p-3 rounded-full shadow-lg hover:scale-105 transition z-10"
+          >
+            <ArrowDown size={18} />
+          </button>
+        )}
+      </div>
+
+      {/* FIXED INPUT AREA AT THE BOTTOM */}
+      <div className="w-full flex justify-center shrink-0 p-4 pb-6">
+        <div className="w-full max-w-[800px] flex items-end bg-white rounded-3xl border border-slate-200 shadow-sm p-1.5 pl-3 gap-2 transition-all">
+          <button 
+            onClick={handleNewChat}
+            title="Buat Sesi Baru"
+            className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 transition mb-0.5"
+          >
+            <Plus size={22} />
+          </button>
+          
+          <textarea
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              e.target.style.height = 'auto';
+              e.target.style.height = e.target.scrollHeight + 'px';
+            }}
+            onKeyDown={handleKeyDown}
+            disabled={isTyping}
+            placeholder="Ketik pesan..."
+            className="flex-1 resize-none bg-transparent py-3 text-[15px] text-slate-800 placeholder:text-slate-400 focus:outline-none disabled:opacity-60 max-h-[150px]"
+            rows={1}
+            style={{ minHeight: '44px' }}
+          />
+
+          <button
+            onClick={handleSendMessage}
+            disabled={isTyping || !message.trim()}
+            className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-blue-600 text-white transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 mb-0.5"
+          >
+            <ArrowUp
+              size={20}
+              strokeWidth={2.5}
+              className={isTyping ? "animate-pulse" : ""}
             />
-
-            <Button
-              onClick={handleSendMessage}
-              disabled={isTyping || !message.trim()}
-              className="h-12 w-12 p-0 cursor-pointer"
-            >
-              <Send
-                size={18}
-                className={isTyping ? "animate-pulse cursor-pointer" : ""}
-              />
-            </Button>
-          </div>
+          </button>
         </div>
       </div>
     </div>

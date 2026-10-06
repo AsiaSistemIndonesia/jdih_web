@@ -12,35 +12,22 @@ export const DokumenHukumSchema = z.object({
   kategori: z
     .string()
     .min(1, "Kategori wajib dipilih"),
-
-  nomor: z
-    .string()
-    .min(1, "Nomor wajib diisi")
-    .max(100, "Nomor maksimal 100 karakter"),
-
+  nomor: z.string().optional(),
   tahun: z
     .string()
     .min(1, "Tahun wajib diisi"),
-
-  bidang: z
-    .string()
-    .min(1, "Bidang wajib dipilih"),
-
-  tipe_dokumen: z
-    .string().optional(),
+  bidang: z.string().optional(),
+  tipe_dokumen: z.string().optional(),
   tempat_penetapan: z
-    .string().optional(),
+    .string()
+    .min(1, "Tempat penetapan wajib diisi"),
+
   tanggal_penetapan: z
     .string()
     .min(1, "Tanggal penetapan wajib diisi"),
 
-  tanggal_pengundangan: z
-    .string()
-    .min(1, "Tanggal pengundangan wajib diisi"),
-
-  tanggal_berlaku: z
-    .string()
-    .min(1, "Tanggal berlaku wajib diisi"),
+  tanggal_pengundangan: z.string().optional(),
+  tanggal_berlaku: z.string().optional(),
 
   sumber: z
     .string().optional(),
@@ -51,65 +38,7 @@ export const DokumenHukumSchema = z.object({
   status: z
     .string()
     .min(1, "Status wajib dipilih"),
-  file_abstrak: z
-    .union([
-      z.instanceof(File),
-      z.string(),
-      z.null(),
-    ])
-    .optional()
-    .refine(
-      (value) => {
-        if (
-          value === undefined ||
-          value === null ||
-          value === ""
-        ) {
-          return true;
-        }
-
-        if (typeof value === "string") {
-          return value.trim().length > 0;
-        }
-
-        return true;
-      },
-      {
-        message: "File abstrak tidak valid",
-      }
-    )
-    .refine(
-      (value) => {
-        if (
-          value === undefined ||
-          value === null ||
-          typeof value === "string"
-        ) {
-          return true;
-        }
-
-        return value.size <= 30 * 1024 * 1024;
-      },
-      {
-        message: "Ukuran file abstrak maksimal 30 MB",
-      }
-    )
-    .refine(
-      (value) => {
-        if (
-          value === undefined ||
-          value === null ||
-          typeof value === "string"
-        ) {
-          return true;
-        }
-
-        return value.type === "application/pdf";
-      },
-      {
-        message: "File abstrak harus berformat PDF",
-      }
-    ),
+  file_abstrak: z.any().optional(),
 
   file_dokumen: z
     .union([
@@ -119,17 +48,12 @@ export const DokumenHukumSchema = z.object({
     ])
     .refine(
       (value) => {
-        // NULL = belum memilih file
         if (value === null) {
           return false;
         }
-
-        // STRING = file lama dari database
         if (typeof value === "string") {
           return value.trim().length > 0;
         }
-
-        // FILE = file baru
         return true;
       },
       {
@@ -138,14 +62,12 @@ export const DokumenHukumSchema = z.object({
     )
     .refine(
       (value) => {
-        // Null dan file lama tidak perlu validasi ukuran
         if (
           value === null ||
           typeof value === "string"
         ) {
           return true;
         }
-
         return value.size <= 30 * 1024 * 1024;
       },
       {
@@ -155,14 +77,12 @@ export const DokumenHukumSchema = z.object({
     )
     .refine(
       (value) => {
-        // Null dan file lama tidak perlu validasi tipe
         if (
           value === null ||
           typeof value === "string"
         ) {
           return true;
         }
-
         return value.type === "application/pdf";
       },
       {
@@ -170,7 +90,6 @@ export const DokumenHukumSchema = z.object({
           "File dokumen harus berformat PDF",
       }
     ),
-
 });
 
 export type DokumenHukumFormValues =

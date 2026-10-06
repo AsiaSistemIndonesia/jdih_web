@@ -253,7 +253,7 @@ export function PeraturanList() {
 
             <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
               Daftar peraturan perundang-undangan terbaru yang telah
-              diinventarisasi dalam sistem JDIH.
+              diinventarisasi dalam sistem HDH.
             </p>
           </div>
 

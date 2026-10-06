@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 import FormImageUpload from "@/components/ui/FormImageUpload";
 import FormInput from "@/components/ui/FormInput";
+import FormSelect from "@/components/ui/FormSelect";
 
 import { Pengguna } from "../types/Pengguna.type";
 
@@ -53,6 +54,7 @@ export default function PenggunaForm({
     handleSubmit,
     reset,
     setValue,
+    control,
     formState: { errors },
   } = useForm<PenggunaFormValues>({
     resolver: zodResolver(
@@ -64,6 +66,7 @@ export default function PenggunaForm({
       nama: "",
       email: "",
       password: "",
+      role: "Pengguna",
       foto: null,
     },
   });
@@ -88,6 +91,9 @@ export default function PenggunaForm({
 
         password: "",
 
+        role:
+          data.role ?? "Pengguna",
+
         foto:
           fotoValue,
       });
@@ -102,6 +108,7 @@ export default function PenggunaForm({
       nama: "",
       email: "",
       password: "",
+      role: "Pengguna",
       foto: null,
     });
 
@@ -161,6 +168,11 @@ export default function PenggunaForm({
       values.email.trim()
     );
 
+    formData.append(
+      "role",
+      values.role
+    );
+
     /*
      * Password hanya CREATE
      */
@@ -215,6 +227,7 @@ export default function PenggunaForm({
               nama: "",
               email: "",
               password: "",
+              role: "Pengguna",
               foto: null,
             });
 
@@ -349,6 +362,9 @@ export default function PenggunaForm({
 
         password: "",
 
+        role:
+          data.role ?? "Pengguna",
+
         foto:
           fotoValue,
       });
@@ -365,6 +381,7 @@ export default function PenggunaForm({
       nama: "",
       email: "",
       password: "",
+      role: "Pengguna",
       foto: null,
     });
 
@@ -439,6 +456,20 @@ export default function PenggunaForm({
           }
         />
       )}
+
+      <FormSelect
+        name="role"
+        control={control}
+        label="Role Pengguna"
+        required
+        placeholder="Pilih role"
+        options={[
+          { value: "Admin", label: "Admin" },
+          { value: "Pengguna", label: "Pengguna" },
+        ]}
+        error={errors.role?.message}
+        isDisabled={isSubmitting}
+      />
 
       <div
         className="

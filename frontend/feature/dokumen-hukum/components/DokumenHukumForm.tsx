@@ -192,20 +192,20 @@ export default function DokumenHukumForm({
 
     formData.append("kategori", values.kategori);
 
-    formData.append("nomor", values.nomor.trim());
+    formData.append("nomor", values.nomor?.trim() ?? "");
 
     formData.append("tahun", String(values.tahun));
 
-    formData.append("bidang", values.bidang);
+    formData.append("bidang", values.bidang ?? "");
 
     formData.append("tipe_dokumen", values.tipe_dokumen ?? "");
 
     formData.append("tempat_penetapan", values.tempat_penetapan?.trim() ?? "");
     formData.append("tanggal_penetapan", values.tanggal_penetapan);
 
-    formData.append("tanggal_pengundangan", values.tanggal_pengundangan);
+    formData.append("tanggal_pengundangan", values.tanggal_pengundangan ?? "");
 
-    formData.append("tanggal_berlaku", values.tanggal_berlaku);
+    formData.append("tanggal_berlaku", values.tanggal_berlaku ?? "");
 
     formData.append("sumber", values.sumber?.trim() ?? "");
 
@@ -213,15 +213,9 @@ export default function DokumenHukumForm({
 
     formData.append("status", values.status);
 
-    if (values.file_abstrak instanceof File) {
-      formData.append("file_abstrak", values.file_abstrak);
-    }
-
     if (values.file_dokumen instanceof File) {
       formData.append("file_dokumen", values.file_dokumen);
     }
-
-
 
     formData.forEach((value, key) => {
 
@@ -673,43 +667,18 @@ export default function DokumenHukumForm({
             />
           </div>
 
-          {/* KATEGORI */}
-
+          {/* TIPE DOKUMEN (KATEGORI) */}
           <FormSelect2
             name="kategori"
             control={control}
             label="Kategori"
             required
             placeholder="Pilih kategori..."
-            options={kategoriOptions}
+            options={tipeDokumenOptions}
             error={errors.kategori?.message}
             disabled={isSubmitting}
             isSearchable
             isClearable
-          />
-
-          <FormSelect2
-            name="tipe_dokumen"
-            control={control}
-            label="Tipe Dokumen"
-            placeholder="Pilih tipe dokumen..."
-            options={tipeDokumenOptions}
-            error={errors.tipe_dokumen?.message}
-            disabled={isSubmitting}
-            isSearchable
-            isClearable
-          />
-
-          {/* NOMOR */}
-
-          <FormInput
-            type="text"
-            label="Nomor"
-            required
-            placeholder="Masukkan nomor dokumen"
-            {...register("nomor")}
-            error={errors.nomor?.message}
-            disabled={isSubmitting}
           />
 
           <FormSelect2
@@ -724,20 +693,6 @@ export default function DokumenHukumForm({
             isSearchable
             isClearable
           />
-
-          <FormSelect2
-            name="bidang"
-            control={control}
-            label="Bidang"
-            required
-            placeholder="Pilih bidang..."
-            options={bidangOptions}
-            error={errors.bidang?.message}
-            disabled={isSubmitting}
-            isSearchable
-            isClearable
-          />
-
 
 
           <FormInput
@@ -829,53 +784,7 @@ export default function DokumenHukumForm({
             disabled={isSubmitting}
           />
 
-          {/* TANGGAL PENGUNDANGAN */}
 
-          <FormInput
-            type="date"
-            label="Tanggal Pengundangan"
-            required
-            {...register("tanggal_pengundangan")}
-            error={errors.tanggal_pengundangan?.message}
-            disabled={isSubmitting}
-          />
-
-          {/* TANGGAL BERLAKU */}
-
-          <FormInput
-            type="date"
-            label="Tanggal Berlaku"
-            required
-            {...register("tanggal_berlaku")}
-            error={errors.tanggal_berlaku?.message}
-            disabled={isSubmitting}
-          />
-
-          {/* SUMBER */}
-
-          <FormInput
-            type="text"
-            label="Sumber"
-            required
-            placeholder="Masukkan sumber"
-            {...register("sumber")}
-            error={errors.sumber?.message}
-            disabled={isSubmitting}
-          />
-
-
-          <FormSelect2
-            name="subject"
-            control={control}
-            label="Subject"
-            required
-            placeholder="Pilih subject..."
-            options={subjectOptions}
-            error={errors.subject?.message}
-            disabled={isSubmitting}
-            isSearchable
-            isClearable
-          />
 
           <FormSelect2
             name="status"
@@ -954,17 +863,8 @@ export default function DokumenHukumForm({
           grid
           grid-cols-1
           gap-6
-          md:grid-cols-2
         "
         >
-          <FileUpload
-            name="file_abstrak"
-            label="File Abstrak"
-            value={fileAbstrak}
-            error={errors.file_abstrak?.message}
-            required={!isEdit}
-          />
-
           <FileUpload
             name="file_dokumen"
             label="File Dokumen"

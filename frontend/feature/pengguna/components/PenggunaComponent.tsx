@@ -365,7 +365,7 @@ function PenggunaContent() {
 
           title="Pengguna"
 
-          description="Kelola pengguna yang digunakan untuk mengelola website JDIH."
+          description="Kelola pengguna yang digunakan untuk mengelola website HDH."
 
           searchPlaceholder="Cari pengguna..."
 

@@ -1,32 +1,32 @@
-
 "use client";
 
 import { useState } from "react";
+import { useParams } from "next/navigation";
 
 import AdminNavbar from "@/feature/layouts/AdminNavbar";
 import AdminSidebar from "@/feature/layouts/AdminSidebar";
 import AdminFooter from "@/feature/layouts/AdminFooter";
-import DokumenHukumComponent from "@/feature/dokumen-hukum/components/DokumenHukumComponent";
-import { ProdukHukumTable } from "@/components/produk-hukum-table";
-import { SessionHook } from "@/feature/web";
+import { AdminProdukHukumDetail } from "@/components/admin-produk-hukum-detail";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
-export default function DokumenHukumPage() {
+export default function AdminDokumenHukumDetailPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const session = SessionHook();
-  const userRole = session?.data?.data?.role;
+  const params = useParams();
+  const id = Number(params?.id);
+
+  if (!id) return null;
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-
       <AdminSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
 
       <div className="lg:pl-[270px] flex flex-col min-h-screen">
-
         <div className="lg:hidden p-4 border-b border-slate-200 bg-white flex items-center justify-between">
-          <h1 className="font-semibold text-slate-800">Dokumen Hukum</h1>
+          <h1 className="font-semibold text-slate-800">Detail Dokumen Hukum</h1>
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -37,19 +37,16 @@ export default function DokumenHukumPage() {
         </div>
 
         <div className="flex-1 p-4 lg:p-8">
-          {userRole === "Pengguna" ? (
-            <div className="space-y-4">
-              <div>
-                <h1 className="text-2xl font-semibold text-slate-800">Dokumen Hukum</h1>
-                <p className="mt-1 text-sm text-slate-500">
-                  Kelola pengguna yang digunakan untuk mengelola website HDH.
-                </p>
-              </div>
-              <ProdukHukumTable />
-            </div>
-          ) : (
-            <DokumenHukumComponent />
-          )}
+          <div className="mb-6">
+            <Link 
+              href="/admin/dokumen-hukum"
+              className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Kembali 
+            </Link>
+          </div>
+          <AdminProdukHukumDetail id={id} />
         </div>
 
         <AdminFooter />

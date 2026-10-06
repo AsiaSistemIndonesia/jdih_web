@@ -14,6 +14,10 @@ export const PenggunaSchema = (isEdit: boolean) =>
       .min(1, "Email wajib diisi")
       .email("Format email tidak valid"),
 
+    role: z
+      .string()
+      .min(1, "Role wajib dipilih"),
+
     password: isEdit
       ? z.string().optional()
       : z
